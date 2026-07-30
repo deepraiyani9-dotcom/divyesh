@@ -63,8 +63,8 @@ const ApplyModal = ({ career, onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-          <h3 className="font-semibold text-lg text-secondary">Apply for {career?.title}</h3>
-          <button onClick={onClose} className="text-muted hover:text-secondary w-9 h-9 rounded-full flex items-center justify-center hover:bg-slate-100">
+          <h3 className="font-semibold text-lg text-ink">Apply for {career?.title}</h3>
+          <button onClick={onClose} className="text-muted hover:text-ink w-9 h-9 rounded-full flex items-center justify-center hover:bg-slate-100">
             <FaTimes />
           </button>
         </div>
@@ -72,7 +72,7 @@ const ApplyModal = ({ career, onClose }) => {
         {status.state === 'success' ? (
           <div className="p-8 text-center">
             <FaCheckCircle className="text-emerald-500 text-5xl mx-auto mb-4" />
-            <p className="font-semibold text-secondary mb-2">Application Submitted!</p>
+            <p className="font-semibold text-ink mb-2">Application Submitted!</p>
             <p className="text-sm text-muted mb-6">{status.message}</p>
             <button onClick={onClose} className="btn btn-primary">
               Close
@@ -162,7 +162,7 @@ const Career = () => {
                 >
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-semibold text-lg text-secondary">{job.title}</h3>
+                      <h3 className="font-semibold text-lg text-ink">{job.title}</h3>
                       <span className="bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full">{job.type}</span>
                     </div>
                     <div className="flex flex-wrap gap-4 text-sm text-muted mb-3">
@@ -178,7 +178,7 @@ const Career = () => {
                         <FaClock size={12} /> {job.type}
                       </span>
                     </div>
-                    <p className="text-secondary/80 text-sm max-w-2xl">{job.description}</p>
+                    <p className="text-ink/80 text-sm max-w-2xl">{job.description}</p>
                     {job.requirements?.length > 0 && (
                       <ul className="mt-3 space-y-1.5">
                         {job.requirements.map((req) => (
@@ -197,7 +197,7 @@ const Career = () => {
             </div>
           ) : (
             <div className="text-center py-16">
-              <p className="text-lg font-semibold text-secondary mb-2">No open positions right now</p>
+              <p className="text-lg font-semibold text-ink mb-2">No open positions right now</p>
               <p className="text-muted">Check back soon or send us your resume for future opportunities.</p>
               <div className="mt-6">
                 <Button onClick={() => setApplyTo({ title: 'General Application' })} variant="outline">

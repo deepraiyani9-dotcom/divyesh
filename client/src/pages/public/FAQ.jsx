@@ -30,7 +30,7 @@ const FAQ = () => {
                   onClick={() => setOpen(open === i ? -1 : i)}
                   className="w-full flex items-center justify-between gap-4 p-5 text-left"
                 >
-                  <span className="font-semibold text-secondary">{faq.question}</span>
+                  <span className="font-semibold text-ink">{faq.question}</span>
                   <FaChevronDown className={`text-primary shrink-0 transition-transform ${open === i ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>

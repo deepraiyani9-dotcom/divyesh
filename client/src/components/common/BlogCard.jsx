@@ -37,7 +37,7 @@ const BlogCard = ({ blog, index = 0 }) => {
             <FaRegUser size={12} /> {blog.author || 'Lotus Agritech'}
           </span>
         </div>
-        <h3 className="font-semibold text-lg text-secondary line-clamp-2 mb-2">
+        <h3 className="font-semibold text-lg text-ink line-clamp-2 mb-2">
           <Link to={`/blog/${blog.slug}`} className="hover:text-primary transition-colors">
             {blog.title}
           </Link>

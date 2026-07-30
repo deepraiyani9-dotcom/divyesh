@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import {
   FaArrowRight,
   FaAward,
@@ -10,8 +9,9 @@ import {
   FaIndustry,
   FaMedal,
   FaPhoneAlt,
+  FaRulerCombined,
+  FaShieldAlt,
   FaTruck,
-  FaUsers,
 } from 'react-icons/fa';
 import SEO from '../../components/common/SEO.jsx';
 import SectionTitle from '../../components/common/SectionTitle.jsx';
@@ -30,13 +30,14 @@ import { getCertificates } from '../../services/certificateService';
 import { COMPANY, INDUSTRIES, MANUFACTURING_STEPS, WHY_CHOOSE_US } from '../../utils/constants';
 import { resolveAssetUrl } from '../../utils/format';
 import heroImg from '../../assets/hero-pvc.png';
+import introPipesImg from '../../assets/intro-pipes.png';
 
 const ICONS = { FaMedal, FaCogs, FaTruck, FaHeadset };
 
 const STATS = [
-  { label: 'Years of Excellence', value: '15+', icon: <FaAward /> },
+  { label: 'Pipe Sizes Available', value: '20–250mm', icon: <FaRulerCombined /> },
   { label: 'Products Delivered', value: '50K+', icon: <FaBoxes /> },
-  { label: 'Happy Clients', value: '2,000+', icon: <FaUsers /> },
+  { label: 'Quality Certified', value: 'ISO 9001', icon: <FaShieldAlt /> },
   { label: 'Manufacturing Lines', value: '12+', icon: <FaIndustry /> },
 ];
 
@@ -68,12 +69,12 @@ const Home = () => {
       />
 
       {/* HERO */}
-      <section className="relative bg-secondary overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
+      <section className="relative bg-brand overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
         <div
           className="absolute inset-0 opacity-25"
           style={{
             backgroundImage:
-              'radial-gradient(circle at 15% 30%, #0B5ED7 0%, transparent 45%), radial-gradient(circle at 85% 70%, #F97316 0%, transparent 40%)',
+              'radial-gradient(circle at 15% 30%, #0D7377 0%, transparent 45%), radial-gradient(circle at 85% 70%, #E07A3D 0%, transparent 40%)',
           }}
         />
         <div className="container-custom relative z-10 grid lg:grid-cols-2 gap-12 items-center">
@@ -88,7 +89,7 @@ const Home = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6">
               Building Trust &amp; <span className="text-accent">Steady Flows</span>, One Pipe at a Time.
             </h1>
-            <p className="text-slate-300 text-base md:text-lg max-w-xl mb-8">
+            <p className="text-slate-100 text-base md:text-lg max-w-xl mb-8">
               {COMPANY.name} engineers premium, durable PVC & UPVC piping solutions for agriculture, plumbing,
               construction and industrial applications — trusted across Gujarat and beyond.
             </p>
@@ -102,7 +103,7 @@ const Home = () => {
             </div>
             <div className="flex flex-wrap items-center gap-6 mt-10">
               {['ISO 9001:2015 Certified', 'Lead-Free Material', '24×7 Support'].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-slate-300 text-sm">
+                <div key={item} className="flex items-center gap-2 text-slate-100 text-sm">
                   <FaCheckCircle className="text-accent" /> {item}
                 </div>
               ))}
@@ -119,7 +120,7 @@ const Home = () => {
             <img
               src={heroImg}
               alt="Lotus Agritech PVC Pipes"
-              className="relative z-10 w-full max-w-lg mx-auto rounded-3xl opacity-90 shadow-2xl shadow-black/20 animate-float object-cover"
+              className="relative z-10 w-full max-w-lg mx-auto rounded-3xl shadow-2xl shadow-black/25 animate-float object-cover"
             />
           </motion.div>
         </div>
@@ -140,7 +141,7 @@ const Home = () => {
               <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-xl mx-auto mb-3">
                 {s.icon}
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-secondary">{s.value}</p>
+              <p className="text-2xl md:text-3xl font-bold text-ink">{s.value}</p>
               <p className="text-xs md:text-sm text-muted mt-1">{s.label}</p>
             </motion.div>
           ))}
@@ -157,13 +158,17 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className="grid grid-cols-2 gap-4"
           >
-            <div className="rounded-2xl overflow-hidden aspect-[3/4] bg-surface">
-              <img src={heroImg} alt="Manufacturing" className="w-full h-full object-contain p-6" />
+            <div className="rounded-2xl overflow-hidden aspect-[3/4] bg-[#F0F1F3]">
+              <img
+                src={introPipesImg}
+                alt="PVC pipes ready for dispatch"
+                className="w-full h-full object-cover object-center"
+              />
             </div>
             <div className="flex flex-col gap-4">
               <div className="rounded-2xl bg-primary p-6 text-white flex-1 flex flex-col justify-center">
-                <p className="text-3xl font-bold">15+</p>
-                <p className="text-sm text-blue-100 mt-1">Years Manufacturing Excellence</p>
+                <p className="text-3xl font-bold">24×7</p>
+                <p className="text-sm text-teal-100 mt-1">Support & Dispatch Ready</p>
               </div>
               <div className="rounded-2xl bg-accent p-6 text-white flex-1 flex flex-col justify-center">
                 <p className="text-3xl font-bold">100%</p>
@@ -188,19 +193,19 @@ const Home = () => {
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <FaCheckCircle className="text-primary mt-1 shrink-0" />
-                  <span className="text-secondary/80">{item}</span>
+                  <span className="text-ink/80">{item}</span>
                 </li>
               ))}
             </ul>
-            <Button to="/about" icon={<FaArrowRight />}>
-              More About Us
+            <Button to="/about" variant="accent" icon={<FaArrowRight />}>
+              Discover Our Story
             </Button>
           </div>
         </div>
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="section-padding bg-surface">
+      <section className="section-padding bg-secondary">
         <div className="container-custom">
           <SectionTitle
             eyebrow="Why Choose Us"
@@ -222,7 +227,7 @@ const Home = () => {
                   <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-2xl mx-auto mb-4">
                     {Icon ? <Icon /> : <FaMedal />}
                   </div>
-                  <h3 className="font-semibold text-secondary mb-2">{item.title}</h3>
+                  <h3 className="font-semibold text-ink mb-2">{item.title}</h3>
                   <p className="text-sm text-muted">{item.description}</p>
                 </motion.div>
               );
@@ -251,19 +256,19 @@ const Home = () => {
             <p className="text-center text-muted">Featured products coming soon.</p>
           )}
           <div className="text-center mt-10">
-            <Button to="/products" variant="outline" icon={<FaArrowRight />}>
-              View All Products
+            <Button to="/products" variant="primary" icon={<FaArrowRight />}>
+              Explore Full Catalogue
             </Button>
           </div>
         </div>
       </section>
 
       {/* INDUSTRIES */}
-      <section className="section-padding bg-secondary relative overflow-hidden">
+      <section className="section-padding bg-brand relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
           style={{
-            backgroundImage: 'radial-gradient(circle at 90% 10%, #0B5ED7 0%, transparent 45%)',
+            backgroundImage: 'radial-gradient(circle at 90% 10%, #0D7377 0%, transparent 45%)',
           }}
         />
         <div className="container-custom relative z-10">
@@ -273,24 +278,26 @@ const Home = () => {
             title="Piping Solutions Across Every Sector"
             description="From agricultural irrigation to industrial fluid transport — our pipes power critical infrastructure."
           />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-6">
             {INDUSTRIES.map((ind, i) => (
               <motion.div
                 key={ind.title}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -60 : 60 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors"
+                transition={{ duration: 0.55, delay: i * 0.08, ease: 'easeOut' }}
+                className={`bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all lg:col-span-2 ${
+                  i === 3 ? 'lg:col-start-2' : ''
+                } ${i >= 3 ? 'sm:col-span-1' : ''}`}
               >
-                <h3 className="font-semibold text-white mb-2">{ind.title}</h3>
-                <p className="text-sm text-slate-400">{ind.description}</p>
+                <h3 className="font-semibold text-ink mb-2">{ind.title}</h3>
+                <p className="text-sm text-slate-600">{ind.description}</p>
               </motion.div>
             ))}
           </div>
           <div className="text-center mt-10">
-            <Button to="/industries" variant="accent" icon={<FaArrowRight />}>
-              View All Industries
+            <Button to="/industries" variant="white" icon={<FaArrowRight />}>
+              Explore Industries
             </Button>
           </div>
         </div>
@@ -317,37 +324,15 @@ const Home = () => {
                 <span className="absolute -top-5 left-6 w-10 h-10 rounded-xl bg-primary text-white font-bold flex items-center justify-center shadow-lg">
                   {step.step}
                 </span>
-                <h3 className="font-semibold text-secondary mb-2 mt-2">{step.title}</h3>
+                <h3 className="font-semibold text-ink mb-2 mt-2">{step.title}</h3>
                 <p className="text-sm text-muted">{step.description}</p>
               </motion.div>
             ))}
           </div>
           <div className="text-center mt-10">
-            <Button to="/manufacturing-process" variant="outline" icon={<FaArrowRight />}>
-              See Full Process
+            <Button to="/manufacturing-process" variant="primary" icon={<FaArrowRight />}>
+              See How We Manufacture
             </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* CLIENT LOGOS / ACHIEVEMENTS MARQUEE */}
-      <section className="py-14 bg-surface border-y border-slate-100 overflow-hidden">
-        <div className="container-custom mb-8">
-          <p className="text-center text-sm font-semibold uppercase tracking-widest text-muted">
-            Trusted by dealers, builders & farmers across Gujarat
-          </p>
-        </div>
-        <div className="flex overflow-hidden select-none">
-          <div className="flex gap-16 animate-marquee shrink-0">
-            {[...Array(2)].flatMap(() =>
-              ['Patel Farms', 'Mehta Builders', 'Gujarat AgroWorks', 'Shree Irrigation', 'Dwarka Infra', 'Kalyanpur Traders'].map(
-                (name, idx) => (
-                  <span key={name + idx} className="text-xl md:text-2xl font-bold text-slate-300 whitespace-nowrap">
-                    {name}
-                  </span>
-                )
-              )
-            )}
           </div>
         </div>
       </section>
@@ -376,7 +361,7 @@ const Home = () => {
 
       {/* CERTIFICATES */}
       {!loadingCertificates && certificates.length > 0 && (
-        <section className="section-padding bg-surface">
+        <section className="section-padding bg-secondary">
           <div className="container-custom">
             <SectionTitle
               eyebrow="Quality Assured"
@@ -398,12 +383,12 @@ const Home = () => {
                   ) : (
                     <FaAward className="text-primary text-3xl" />
                   )}
-                  <p className="text-sm font-semibold text-secondary">{cert.title}</p>
+                  <p className="text-sm font-semibold text-ink">{cert.title}</p>
                 </motion.div>
               ))}
             </div>
             <div className="text-center mt-10">
-              <Button to="/certificates" variant="outline" icon={<FaArrowRight />}>
+              <Button to="/certificates" variant="accent" icon={<FaArrowRight />}>
                 View All Certificates
               </Button>
             </div>
@@ -431,8 +416,8 @@ const Home = () => {
             <p className="text-center text-muted">Articles coming soon.</p>
           )}
           <div className="text-center mt-10">
-            <Button to="/blog" variant="outline" icon={<FaArrowRight />}>
-              Visit Our Blog
+            <Button to="/blog" variant="accent" icon={<FaArrowRight />}>
+              Read Latest Articles
             </Button>
           </div>
         </div>
@@ -441,15 +426,21 @@ const Home = () => {
       <ContactCTA />
 
       {/* MAP */}
-      <section className="section-padding bg-surface">
+      <section className="section-padding bg-secondary">
         <div className="container-custom grid lg:grid-cols-2 gap-10 items-center">
           <div>
             <SectionTitle center={false} eyebrow="Visit Us" title="Find Our Manufacturing Unit" />
             <p className="text-muted mb-6">{COMPANY.address}</p>
             <div className="flex flex-col gap-3">
-              <Link to="/contact" className="btn btn-primary w-fit">
+              <Button
+                href={COMPANY.mapLink}
+                target="_blank"
+                rel="noreferrer"
+                variant="primary"
+                icon={<FaArrowRight />}
+              >
                 Get Directions & Contact Info
-              </Link>
+              </Button>
             </div>
           </div>
           <GoogleMapEmbed height={360} />

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaFilter, FaSearch, FaTimes } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import SEO from '../../components/common/SEO.jsx';
 import PageHero from '../../components/common/PageHero.jsx';
 import ProductCard from '../../components/common/ProductCard.jsx';
@@ -16,7 +16,6 @@ const Products = () => {
   const [categories, setCategories] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 });
   const [loading, setLoading] = useState(true);
-  const [filterOpen, setFilterOpen] = useState(false);
 
   const category = searchParams.get('category') || '';
   const q = searchParams.get('q') || '';
@@ -72,14 +71,11 @@ const Products = () => {
       <section className="section-padding !pt-16">
         <div className="container-custom">
           <div className="flex items-center justify-between mb-6 lg:hidden">
-            <h3 className="font-semibold text-secondary">Filters</h3>
-            <button onClick={() => setFilterOpen((o) => !o)} className="btn btn-outline text-sm py-2 px-4">
-              <FaFilter size={12} /> {filterOpen ? 'Hide' : 'Show'}
-            </button>
+            <h3 className="font-semibold text-ink">Categories</h3>
           </div>
 
           <div className="grid lg:grid-cols-[260px_1fr] gap-8">
-            <aside className={`${filterOpen ? 'block' : 'hidden'} lg:block`}>
+            <aside className="block">
               <div className="card p-5 sticky top-24">
                 <form onSubmit={handleSearchSubmit} className="mb-6">
                   <label className="label-field">Search Products</label>
@@ -95,12 +91,12 @@ const Products = () => {
                   </div>
                 </form>
 
-                <h4 className="font-semibold text-secondary mb-3 text-sm">Categories</h4>
+                <h4 className="font-semibold text-ink mb-3 text-sm">Categories</h4>
                 <div className="flex flex-col gap-1">
                   <button
                     onClick={() => updateParams({ category: '' })}
                     className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      !category ? 'bg-primary text-white' : 'hover:bg-slate-50 text-secondary'
+                      !category ? 'bg-primary text-white' : 'hover:bg-slate-50 text-ink'
                     }`}
                   >
                     All Products
@@ -110,25 +106,13 @@ const Products = () => {
                       key={c._id}
                       onClick={() => updateParams({ category: c._id })}
                       className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        category === c._id ? 'bg-primary text-white' : 'hover:bg-slate-50 text-secondary'
+                        category === c._id ? 'bg-primary text-white' : 'hover:bg-slate-50 text-ink'
                       }`}
                     >
                       {c.name}
                     </button>
                   ))}
                 </div>
-
-                {(category || q) && (
-                  <button
-                    onClick={() => {
-                      setSearchInput('');
-                      updateParams({ category: '', q: '' });
-                    }}
-                    className="mt-5 text-sm text-red-500 font-medium flex items-center gap-1.5"
-                  >
-                    <FaTimes size={11} /> Clear Filters
-                  </button>
-                )}
               </div>
             </aside>
 
@@ -150,7 +134,7 @@ const Products = () => {
                           key={idx}
                           onClick={() => updateParams({ page: String(idx + 1) })}
                           className={`w-9 h-9 rounded-lg text-sm font-semibold transition-colors ${
-                            page === idx + 1 ? 'bg-primary text-white' : 'border border-slate-200 hover:bg-slate-50 text-secondary'
+                            page === idx + 1 ? 'bg-primary text-white' : 'border border-slate-200 hover:bg-slate-50 text-ink'
                           }`}
                         >
                           {idx + 1}
@@ -161,7 +145,7 @@ const Products = () => {
                 </>
               ) : (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
-                  <p className="text-lg font-semibold text-secondary mb-2">No products found</p>
+                  <p className="text-lg font-semibold text-ink mb-2">No products found</p>
                   <p className="text-muted">Try adjusting your filters or search terms.</p>
                 </motion.div>
               )}

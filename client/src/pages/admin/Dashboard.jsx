@@ -12,8 +12,6 @@ import {
 import { Bar, Doughnut } from 'react-chartjs-2';
 import {
   FaBoxOpen,
-  FaBriefcase,
-  FaClipboardList,
   FaEnvelopeOpenText,
   FaFileInvoiceDollar,
   FaImages,
@@ -53,8 +51,6 @@ const Dashboard = () => {
     { label: 'Gallery Items', value: counts.gallery || 0, icon: <FaImages />, color: 'slate' },
     { label: 'Contact Enquiries', value: counts.contacts || 0, icon: <FaEnvelopeOpenText />, color: 'primary' },
     { label: 'Quote Requests', value: counts.quotes || 0, icon: <FaFileInvoiceDollar />, color: 'accent' },
-    { label: 'Open Positions', value: counts.careers || 0, icon: <FaBriefcase />, color: 'emerald' },
-    { label: 'New Applications', value: counts.applications || 0, icon: <FaClipboardList />, color: 'slate' },
   ];
 
   const barData = {
@@ -63,7 +59,7 @@ const Dashboard = () => {
       {
         label: 'Total Records',
         data: [counts.products, counts.categories, counts.blogs, counts.gallery, counts.testimonials],
-        backgroundColor: '#0B5ED7',
+        backgroundColor: '#0D7377',
         borderRadius: 8,
         maxBarThickness: 48,
       },
@@ -71,11 +67,11 @@ const Dashboard = () => {
   };
 
   const doughnutData = {
-    labels: ['Contacts', 'Quotes', 'Applications'],
+    labels: ['Contacts', 'Quotes'],
     datasets: [
       {
-        data: [counts.contacts || 0, counts.quotes || 0, counts.applications || 0],
-        backgroundColor: ['#0B5ED7', '#F97316', '#1E293B'],
+        data: [counts.contacts || 0, counts.quotes || 0],
+        backgroundColor: ['#0D7377', '#E07A3D'],
         borderWidth: 0,
       },
     ],
@@ -84,7 +80,7 @@ const Dashboard = () => {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-secondary">Dashboard Overview</h1>
+        <h1 className="text-2xl font-bold text-ink">Dashboard Overview</h1>
         <p className="text-sm text-muted mt-1">Welcome back! Here's a summary of your website activity.</p>
       </div>
 
@@ -95,8 +91,11 @@ const Dashboard = () => {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6 mb-6">
-        <div className="card p-5 md:p-6 lg:col-span-2">
-          <h3 className="font-semibold text-secondary mb-4">Content Overview</h3>
+        <div
+          className="p-5 md:p-6 lg:col-span-2 rounded-2xl border border-slate-300 shadow-md"
+          style={{ backgroundColor: '#ffffff', opacity: 1 }}
+        >
+          <h3 className="font-semibold text-ink mb-4">Content Overview</h3>
           <div className="h-72">
             <Bar
               data={barData}
@@ -109,8 +108,11 @@ const Dashboard = () => {
             />
           </div>
         </div>
-        <div className="card p-5 md:p-6">
-          <h3 className="font-semibold text-secondary mb-4">Enquiries Breakdown</h3>
+        <div
+          className="p-5 md:p-6 rounded-2xl border border-slate-300 shadow-md"
+          style={{ backgroundColor: '#ffffff', opacity: 1 }}
+        >
+          <h3 className="font-semibold text-ink mb-4">Enquiries Breakdown</h3>
           <div className="h-72 flex items-center justify-center">
             <Doughnut data={doughnutData} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }} />
           </div>
@@ -118,8 +120,11 @@ const Dashboard = () => {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <div className="card p-5 md:p-6">
-          <h3 className="font-semibold text-secondary mb-4 flex items-center gap-2">
+        <div
+          className="p-5 md:p-6 rounded-2xl border border-slate-300 shadow-md"
+          style={{ backgroundColor: '#ffffff', opacity: 1 }}
+        >
+          <h3 className="font-semibold text-ink mb-4 flex items-center gap-2">
             <FaEnvelopeOpenText className="text-primary" /> Recent Contact Enquiries
           </h3>
           <DataTable
@@ -132,8 +137,11 @@ const Dashboard = () => {
             emptyMessage="No recent contact enquiries."
           />
         </div>
-        <div className="card p-5 md:p-6">
-          <h3 className="font-semibold text-secondary mb-4 flex items-center gap-2">
+        <div
+          className="p-5 md:p-6 rounded-2xl border border-slate-300 shadow-md"
+          style={{ backgroundColor: '#ffffff', opacity: 1 }}
+        >
+          <h3 className="font-semibold text-ink mb-4 flex items-center gap-2">
             <FaFileInvoiceDollar className="text-accent" /> Recent Quote Requests
           </h3>
           <DataTable

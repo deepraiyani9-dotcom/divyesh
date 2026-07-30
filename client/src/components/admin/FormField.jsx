@@ -44,9 +44,9 @@ const FormField = ({ field, value, onChange, error }) => {
               type="checkbox"
               checked={Boolean(value)}
               onChange={(e) => onChange(name, e.target.checked)}
-              className="w-4.5 h-4.5 accent-[#0B5ED7] w-5 h-5"
+              className="w-4.5 h-4.5 accent-[#0D7377] w-5 h-5"
             />
-            <span className="text-sm text-secondary">{label}</span>
+            <span className="text-sm text-ink">{label}</span>
           </label>
         );
       case 'select':

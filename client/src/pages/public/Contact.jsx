@@ -45,7 +45,7 @@ const Contact = () => {
         <div className="container-custom grid lg:grid-cols-[1fr_1.3fr] gap-10">
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
             <div className="card p-6 md:p-8 mb-6">
-              <h3 className="font-semibold text-lg text-secondary mb-5">Get in Touch</h3>
+              <h3 className="font-semibold text-lg text-ink mb-5">Get in Touch</h3>
               <div className="space-y-5">
                 {infoItems.map((item) => (
                   <div key={item.label} className="flex items-start gap-4">
@@ -55,11 +55,11 @@ const Contact = () => {
                     <div>
                       <p className="text-xs text-muted font-semibold uppercase tracking-wide">{item.label}</p>
                       {item.href ? (
-                        <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="text-secondary font-medium hover:text-primary transition-colors">
+                        <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="text-ink font-medium hover:text-primary transition-colors">
                           {item.value}
                         </a>
                       ) : (
-                        <p className="text-secondary font-medium">{item.value}</p>
+                        <p className="text-ink font-medium">{item.value}</p>
                       )}
                     </div>
                   </div>
@@ -76,13 +76,13 @@ const Contact = () => {
             transition={{ duration: 0.5 }}
             className="card p-6 md:p-8"
           >
-            <h3 className="font-semibold text-lg text-secondary mb-1">Send Us a Message</h3>
+            <h3 className="font-semibold text-lg text-ink mb-1">Send Us a Message</h3>
             <p className="text-sm text-muted mb-6">Fill out the form below and our team will get back to you within 24 hours.</p>
 
             {status.state === 'success' ? (
               <div className="text-center py-12">
                 <FaCheckCircle className="text-emerald-500 text-5xl mx-auto mb-4" />
-                <p className="font-semibold text-secondary mb-2">Message Sent!</p>
+                <p className="font-semibold text-ink mb-2">Message Sent!</p>
                 <p className="text-sm text-muted">{status.message}</p>
               </div>
             ) : (

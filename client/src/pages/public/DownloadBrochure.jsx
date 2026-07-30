@@ -55,7 +55,7 @@ const DownloadBrochure = () => {
               <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-3xl mx-auto mb-5">
                 <FaFilePdf />
               </div>
-              <h3 className="font-bold text-xl text-secondary mb-2">Lotus Agritech Product Catalogue</h3>
+              <h3 className="font-bold text-xl text-ink mb-2">Lotus Agritech Product Catalogue</h3>
               <p className="text-muted mb-6">
                 Enter your email to access our full product brochure with specifications, pressure ratings and pricing.
               </p>
@@ -63,7 +63,7 @@ const DownloadBrochure = () => {
               {status.state === 'success' ? (
                 <div className="py-4">
                   <FaCheckCircle className="text-emerald-500 text-4xl mx-auto mb-3" />
-                  <p className="text-secondary font-medium">{status.message}</p>
+                  <p className="text-ink font-medium">{status.message}</p>
                   {settings?.brochureUrl && (
                     <a
                       href={resolveAssetUrl(settings.brochureUrl)}

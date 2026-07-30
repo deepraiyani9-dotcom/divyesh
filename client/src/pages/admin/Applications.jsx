@@ -76,7 +76,7 @@ const Applications = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewing(row)}
-            className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+            className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors"
           >
             <FaEye size={13} />
           </button>
@@ -94,7 +94,10 @@ const Applications = () => {
   return (
     <div>
       <PageHeader title="Job Applications" description="Review job applications submitted through the careers page." />
-      <div className="card p-4 md:p-6">
+      <div
+        className="p-4 md:p-6 rounded-2xl border border-slate-300 shadow-md"
+        style={{ backgroundColor: '#ffffff', opacity: 1 }}
+      >
         <div className="mb-4">
           <SearchInput
             value={q}
@@ -115,26 +118,26 @@ const Applications = () => {
             <div className="grid sm:grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Applicant</p>
-                <p className="text-secondary font-medium">{viewing.name}</p>
+                <p className="text-ink font-medium">{viewing.name}</p>
               </div>
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Position</p>
-                <p className="text-secondary font-medium">{viewing.career?.title || 'General Application'}</p>
+                <p className="text-ink font-medium">{viewing.career?.title || 'General Application'}</p>
               </div>
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Email</p>
-                <p className="text-secondary font-medium">{viewing.email}</p>
+                <p className="text-ink font-medium">{viewing.email}</p>
               </div>
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Phone</p>
-                <p className="text-secondary font-medium">{viewing.phone}</p>
+                <p className="text-ink font-medium">{viewing.phone}</p>
               </div>
             </div>
 
             {viewing.coverLetter && (
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Cover Letter</p>
-                <p className="text-secondary/80 bg-surface p-3 rounded-lg">{viewing.coverLetter}</p>
+                <p className="text-ink/80 bg-surface p-3 rounded-lg">{viewing.coverLetter}</p>
               </div>
             )}
 

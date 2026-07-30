@@ -45,7 +45,7 @@ const Settings = () => {
   return (
     <div>
       <PageHeader title="Website Settings" description="Manage global company information displayed across your website." />
-      <form onSubmit={handleSubmit(onSubmit)} className="card p-6 md:p-8 max-w-3xl">
+      <form onSubmit={handleSubmit(onSubmit)} className="admin-card p-6 md:p-8 max-w-3xl">
         <div className="grid sm:grid-cols-2 gap-5 mb-5">
           <div>
             <label className="label-field">Company Name</label>

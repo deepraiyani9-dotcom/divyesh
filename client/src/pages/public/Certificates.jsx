@@ -46,7 +46,7 @@ const Certificates = () => {
                       <FaAward className="text-primary text-5xl" />
                     )}
                   </div>
-                  <h3 className="font-semibold text-secondary mb-1.5">{cert.title}</h3>
+                  <h3 className="font-semibold text-ink mb-1.5">{cert.title}</h3>
                   {cert.issuer && <p className="text-xs text-muted mb-2">Issued by {cert.issuer}</p>}
                   {cert.description && <p className="text-sm text-muted mb-3">{cert.description}</p>}
                   {cert.issuedAt && <p className="text-xs text-muted">{formatDate(cert.issuedAt)}</p>}

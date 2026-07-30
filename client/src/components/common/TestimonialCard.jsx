@@ -12,7 +12,7 @@ const TestimonialCard = ({ testimonial, index = 0 }) => {
       className="card p-6 md:p-8 h-full flex flex-col"
     >
       <FaQuoteLeft className="text-primary/20 text-3xl mb-4" />
-      <p className="text-secondary/80 flex-1 leading-relaxed">{testimonial.message}</p>
+      <p className="text-ink/80 flex-1 leading-relaxed">{testimonial.message}</p>
       <div className="flex items-center gap-1 mt-5 mb-4 text-accent">
         {Array.from({ length: 5 }).map((_, i) => (
           <FaStar key={i} className={i < (testimonial.rating || 5) ? 'opacity-100' : 'opacity-20'} size={14} />
@@ -31,7 +31,7 @@ const TestimonialCard = ({ testimonial, index = 0 }) => {
           </div>
         )}
         <div>
-          <p className="font-semibold text-secondary text-sm">{testimonial.name}</p>
+          <p className="font-semibold text-ink text-sm">{testimonial.name}</p>
           <p className="text-xs text-muted">
             {[testimonial.role, testimonial.company].filter(Boolean).join(', ')}
           </p>

@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Header from '../components/common/Header.jsx';
 import Footer from '../components/common/Footer.jsx';
 import FloatingInquiryButton from '../components/common/FloatingInquiryButton.jsx';
+import BackToTop from '../components/common/BackToTop.jsx';
 
 const MainLayout = () => {
   return (
@@ -11,6 +12,7 @@ const MainLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      <BackToTop />
       <FloatingInquiryButton />
     </div>
   );

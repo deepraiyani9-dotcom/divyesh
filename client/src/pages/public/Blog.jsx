@@ -80,7 +80,7 @@ const Blog = () => {
                         setSearchParams(next);
                       }}
                       className={`w-9 h-9 rounded-lg text-sm font-semibold transition-colors ${
-                        page === idx + 1 ? 'bg-primary text-white' : 'border border-slate-200 hover:bg-slate-50 text-secondary'
+                        page === idx + 1 ? 'bg-primary text-white' : 'border border-slate-200 hover:bg-slate-50 text-ink'
                       }`}
                     >
                       {idx + 1}

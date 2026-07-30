@@ -34,7 +34,7 @@ const ManufacturingProcess = () => {
                     {step.step}
                   </span>
                   <div className="card p-6 flex-1">
-                    <h3 className="font-semibold text-lg text-secondary mb-2">{step.title}</h3>
+                    <h3 className="font-semibold text-lg text-ink mb-2">{step.title}</h3>
                     <p className="text-muted">{step.description}</p>
                   </div>
                 </motion.div>

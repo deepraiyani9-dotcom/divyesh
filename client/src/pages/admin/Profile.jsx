@@ -46,7 +46,7 @@ const Profile = () => {
   return (
     <div>
       <PageHeader title="My Profile" description="Manage your admin account details." />
-      <form onSubmit={handleSubmit(onSubmit)} className="card p-6 md:p-8 max-w-2xl">
+      <form onSubmit={handleSubmit(onSubmit)} className="admin-card p-6 md:p-8 max-w-2xl">
         <div className="flex items-center gap-4 mb-6">
           {avatar ? (
             <img src={resolveAssetUrl(avatar)} alt={user?.name} className="w-16 h-16 rounded-full object-cover" />
@@ -56,7 +56,7 @@ const Profile = () => {
             </div>
           )}
           <div>
-            <p className="font-semibold text-secondary">{user?.name}</p>
+            <p className="font-semibold text-ink">{user?.name}</p>
             <p className="text-sm text-muted capitalize">{user?.role}</p>
           </div>
         </div>

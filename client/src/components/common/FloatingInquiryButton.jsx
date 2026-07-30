@@ -26,7 +26,7 @@ const FloatingInquiryButton = () => {
               transition={{ duration: 0.2, delay: idx * 0.05 }}
               className="flex items-center gap-3"
             >
-              <span className="bg-secondary text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap">
+              <span className="bg-brand text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap">
                 {item.label}
               </span>
               {item.to ? (

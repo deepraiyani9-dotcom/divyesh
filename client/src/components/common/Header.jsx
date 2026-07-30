@@ -24,40 +24,38 @@ const Header = () => {
     };
   }, [mobileOpen]);
 
-  const linkClass = ({ isActive }) =>
-    `relative px-1 py-2 text-sm font-semibold transition-colors ${
-      isActive ? 'text-primary' : scrolled ? 'text-secondary hover:text-primary' : 'text-secondary hover:text-primary'
-    }`;
+  const navBtnClass = ({ isActive }) => `nav-btn${isActive ? ' active' : ''}`;
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/95 backdrop-blur-md shadow-md py-2.5' : 'bg-white/80 backdrop-blur-sm py-4'
+        scrolled ? 'bg-[#FAFBFC] shadow-md py-2.5' : 'bg-[#FAFBFC] py-4'
       }`}
     >
       <div className="container-custom flex items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-2.5 shrink-0">
           <img src={logo} alt={COMPANY.name} className="h-12 w-auto object-contain mix-blend-multiply" />
           <span className="leading-tight">
-            <span className="block font-bold text-secondary text-lg">{COMPANY.name}</span>
+            <span className="block font-bold text-ink text-lg">{COMPANY.name}</span>
             <span className="block text-[11px] text-muted font-medium -mt-0.5">PVC & UPVC Manufacturers</span>
           </span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="nav-container hidden lg:flex">
           {NAV_LINKS.map((link) =>
             link.children ? (
-              <div key={link.label} className="relative group px-1">
-                <button className="flex items-center gap-1.5 px-1 py-2 text-sm font-semibold text-secondary hover:text-primary transition-colors">
-                  {link.label} <FaChevronDown size={10} className="group-hover:rotate-180 transition-transform" />
+              <div key={link.label} className="relative group">
+                <button type="button" className="nav-btn">
+                  <span>{link.label}</span>
+                  <FaChevronDown size={10} className="group-hover:rotate-180 transition-transform" />
                 </button>
                 <div className="absolute left-0 top-full pt-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-1 group-hover:translate-y-0 transition-all duration-200">
-                  <div className="bg-white rounded-xl shadow-2xl border border-slate-100 p-2">
+                  <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-2">
                     {link.children.map((child) => (
                       <NavLink
                         key={child.to}
                         to={child.to}
-                        className="block px-4 py-2.5 rounded-lg text-sm font-medium text-secondary hover:bg-primary/5 hover:text-primary transition-colors"
+                        className="nav-btn w-full justify-start mb-2"
                       >
                         {child.label}
                       </NavLink>
@@ -66,7 +64,7 @@ const Header = () => {
                 </div>
               </div>
             ) : (
-              <NavLink key={link.to} to={link.to} className={linkClass} end={link.to === '/'}>
+              <NavLink key={link.to} to={link.to} className={navBtnClass} end={link.to === '/'}>
                 {link.label}
               </NavLink>
             )
@@ -74,7 +72,7 @@ const Header = () => {
         </nav>
 
         <button
-          className="lg:hidden text-secondary text-2xl"
+          className="lg:hidden text-ink text-2xl"
           onClick={() => setMobileOpen(true)}
           aria-label="Open menu"
         >
@@ -88,7 +86,7 @@ const Header = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-secondary/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-[60] bg-brand/60 backdrop-blur-sm lg:hidden"
             onClick={() => setMobileOpen(false)}
           >
             <motion.div
@@ -100,20 +98,20 @@ const Header = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between p-5 border-b border-slate-100">
-                <span className="font-bold text-secondary text-lg">Menu</span>
-                <button onClick={() => setMobileOpen(false)} className="text-2xl text-secondary" aria-label="Close menu">
+                <span className="font-bold text-ink text-lg">Menu</span>
+                <button onClick={() => setMobileOpen(false)} className="text-2xl text-ink" aria-label="Close menu">
                   <FaTimes />
                 </button>
               </div>
-              <nav className="p-5 flex flex-col gap-1">
+              <nav className="p-5 flex flex-col gap-2">
                 {NAV_LINKS.map((link) =>
                   link.children ? (
                     <div key={link.label}>
                       <button
                         onClick={() => setMobileDropdown((d) => (d === link.label ? null : link.label))}
-                        className="w-full flex items-center justify-between py-3 text-secondary font-semibold border-b border-slate-100"
+                        className="nav-btn w-full justify-between"
                       >
-                        {link.label}
+                        <span>{link.label}</span>
                         <FaChevronDown
                           size={12}
                           className={`transition-transform ${mobileDropdown === link.label ? 'rotate-180' : ''}`}
@@ -125,14 +123,14 @@ const Header = () => {
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden pl-4"
+                            className="overflow-hidden pl-3"
                           >
                             {link.children.map((child) => (
                               <NavLink
                                 key={child.to}
                                 to={child.to}
                                 onClick={() => setMobileOpen(false)}
-                                className="block py-2.5 text-sm text-muted hover:text-primary"
+                                className="nav-btn w-full text-sm"
                               >
                                 {child.label}
                               </NavLink>
@@ -147,9 +145,7 @@ const Header = () => {
                       to={link.to}
                       onClick={() => setMobileOpen(false)}
                       end={link.to === '/'}
-                      className={({ isActive }) =>
-                        `py-3 font-semibold border-b border-slate-100 ${isActive ? 'text-primary' : 'text-secondary'}`
-                      }
+                      className={({ isActive }) => `nav-btn w-full${isActive ? ' active' : ''}`}
                     >
                       {link.label}
                     </NavLink>

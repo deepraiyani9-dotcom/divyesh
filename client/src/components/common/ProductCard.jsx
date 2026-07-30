@@ -11,13 +11,14 @@ const ProductCard = ({ product, index = 0 }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 1, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, delay: (index % 6) * 0.08 }}
-      className="card group overflow-hidden flex flex-col h-full hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300"
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.4, delay: (index % 6) * 0.05 }}
+      className="bg-white border border-gray-200 rounded-2xl shadow-sm group overflow-hidden flex flex-col h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+      style={{ opacity: 1, backgroundColor: '#FFFFFF' }}
     >
-      <Link to={`/products/${product.slug}`} className="relative overflow-hidden aspect-[4/3] bg-surface block">
+      <Link to={`/products/${product.slug}`} className="relative overflow-hidden aspect-[4/3] bg-secondary block">
         <img
           src={image}
           alt={product.name}
@@ -33,13 +34,13 @@ const ProductCard = ({ product, index = 0 }) => {
           </span>
         )}
         {product.category?.name && (
-          <span className="absolute bottom-3 left-3 bg-white/90 backdrop-blur text-secondary text-xs font-semibold px-3 py-1 rounded-full">
+          <span className="absolute bottom-3 left-3 bg-white/90 backdrop-blur text-ink text-xs font-semibold px-3 py-1 rounded-full">
             {product.category.name}
           </span>
         )}
       </Link>
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-semibold text-lg text-secondary line-clamp-2">
+        <h3 className="font-semibold text-lg text-ink line-clamp-2">
           <Link to={`/products/${product.slug}`} className="hover:text-primary transition-colors">
             {product.name}
           </Link>
@@ -51,7 +52,7 @@ const ProductCard = ({ product, index = 0 }) => {
           </span>
           <Link
             to={`/products/${product.slug}`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-secondary hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink hover:text-primary transition-colors"
           >
             View <FaArrowRight size={12} />
           </Link>

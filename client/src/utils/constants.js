@@ -14,17 +14,22 @@ export const COMPANY = {
   hours: 'Open 24×7 — Full Time',
   mapQuery:
     'Khodiyar Mandir, Juvanpur, Kalyanpur, Dwarka, Gujarat 361315',
+  mapLink: 'https://maps.app.goo.gl/BWjWsbLDNhfEghhc8?g_st=aw',
   developerCredit: "Developed by Deep's Technology",
   founded: '2010',
 };
 
 export const COLORS = {
-  primary: '#0B5ED7',
-  primaryDark: '#094AAD',
-  secondary: '#1E293B',
-  accent: '#F97316',
-  bg: '#FFFFFF',
-  text: '#1F2937',
+  primary: '#0D7377',
+  primaryDark: '#095456',
+  secondary: '#F4F5F7',
+  secondaryLight: '#FAFBFC',
+  brand: '#5B6B8C',
+  ink: '#2C3340',
+  accent: '#E07A3D',
+  bg: '#FAFBFC',
+  surface: '#F4F5F7',
+  text: '#2C3340',
 };
 
 export const NAV_LINKS = [
@@ -42,7 +47,6 @@ export const NAV_LINKS = [
       { label: 'Certificates', to: '/certificates' },
     ],
   },
-  { label: 'Blog', to: '/blog' },
   { label: 'Contact', to: '/contact' },
 ];
 
@@ -100,12 +104,6 @@ export const INDUSTRIES = [
     description:
       'High-strength drainage and sewage pipe systems for municipal networks.',
     icon: 'FaCity',
-  },
-  {
-    title: 'Electrical Conduits',
-    description:
-      'Safe, insulated conduit piping for electrical wiring protection.',
-    icon: 'FaBolt',
   },
 ];
 

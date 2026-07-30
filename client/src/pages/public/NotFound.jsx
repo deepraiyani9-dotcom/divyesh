@@ -15,7 +15,7 @@ const NotFound = () => {
           className="text-center max-w-md"
         >
           <h1 className="text-7xl md:text-9xl font-bold text-primary/20 mb-2">404</h1>
-          <h2 className="text-2xl font-bold text-secondary mb-3">Page Not Found</h2>
+          <h2 className="text-2xl font-bold text-ink mb-3">Page Not Found</h2>
           <p className="text-muted mb-8">
             The page you're looking for doesn't exist or may have been moved. Let's get you back on track.
           </p>

@@ -49,7 +49,7 @@ const About = () => {
               title="Manufacturing Reliable Piping Solutions Since 2010"
               description={`${COMPANY.name} was founded with a simple mission: to deliver durable, dependable PVC & UPVC pipes that farmers, builders and industries can rely on for decades. What began as a modest manufacturing unit has grown into a trusted regional brand known for consistency and craftsmanship.`}
             />
-            <p className="text-secondary/80 leading-relaxed">
+            <p className="text-ink/80 leading-relaxed">
               Located on the Dwarka–Jamnagar Highway, our state-of-the-art facility combines automated extrusion
               technology with a dedicated quality assurance lab, ensuring every pipe that leaves our factory meets
               the highest industry standards.
@@ -70,7 +70,7 @@ const About = () => {
             <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-5">
               <FaBullseye />
             </div>
-            <h3 className="text-xl font-bold text-secondary mb-3">Our Mission</h3>
+            <h3 className="text-xl font-bold text-ink mb-3">Our Mission</h3>
             <p className="text-muted leading-relaxed">
               To manufacture high-quality, durable PVC & UPVC piping solutions that empower agriculture, construction
               and industry — while building lasting trust through consistency, innovation and customer-first service.
@@ -86,7 +86,7 @@ const About = () => {
             <div className="w-14 h-14 rounded-2xl bg-accent/10 text-accent flex items-center justify-center text-2xl mb-5">
               <FaEye />
             </div>
-            <h3 className="text-xl font-bold text-secondary mb-3">Our Vision</h3>
+            <h3 className="text-xl font-bold text-ink mb-3">Our Vision</h3>
             <p className="text-muted leading-relaxed">
               To become India's most trusted name in PVC & UPVC pipe manufacturing, recognized for engineering
               excellence, sustainable practices and unwavering commitment to customer satisfaction.
@@ -111,7 +111,7 @@ const About = () => {
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-2xl mx-auto mb-4">
                   {v.icon}
                 </div>
-                <h3 className="font-semibold text-secondary mb-2">{v.title}</h3>
+                <h3 className="font-semibold text-ink mb-2">{v.title}</h3>
                 <p className="text-sm text-muted">{v.description}</p>
               </motion.div>
             ))}
@@ -119,8 +119,8 @@ const About = () => {
         </div>
       </section>
 
-      <section className="section-padding bg-secondary relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, #0B5ED7 0%, transparent 45%)' }} />
+      <section className="section-padding bg-brand relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, #0D7377 0%, transparent 45%)' }} />
         <div className="container-custom relative z-10">
           <SectionTitle light eyebrow="Our Journey" title="Milestones Along the Way" />
           <div className="max-w-3xl mx-auto">
@@ -141,7 +141,7 @@ const About = () => {
                 </div>
                 <div className="pt-2">
                   <h4 className="font-semibold text-white mb-1.5">{item.title}</h4>
-                  <p className="text-sm text-slate-400">{item.description}</p>
+                  <p className="text-sm text-slate-100">{item.description}</p>
                 </div>
               </motion.div>
             ))}

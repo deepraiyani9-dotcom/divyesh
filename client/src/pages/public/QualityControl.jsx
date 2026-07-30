@@ -42,7 +42,7 @@ const QualityControl = () => {
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">
                   {t.icon}
                 </div>
-                <h3 className="font-semibold text-secondary mb-2">{t.title}</h3>
+                <h3 className="font-semibold text-ink mb-2">{t.title}</h3>
                 <p className="text-sm text-muted">{t.description}</p>
               </motion.div>
             ))}
@@ -50,8 +50,8 @@ const QualityControl = () => {
         </div>
       </section>
 
-      <section className="section-padding bg-secondary relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #0B5ED7 0%, transparent 45%)' }} />
+      <section className="section-padding bg-brand relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #0D7377 0%, transparent 45%)' }} />
         <div className="container-custom relative z-10">
           <SectionTitle light eyebrow="Standards We Follow" title="Certified Quality, Every Time" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -62,10 +62,10 @@ const QualityControl = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center"
+                className="bg-white border border-slate-200 rounded-2xl p-6 text-center shadow-md"
               >
                 <FaShieldAlt className="text-accent text-2xl mx-auto mb-3" />
-                <p className="text-white font-semibold text-sm">{std}</p>
+                <p className="text-ink font-semibold text-sm">{std}</p>
               </motion.div>
             ))}
           </div>

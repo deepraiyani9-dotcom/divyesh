@@ -43,7 +43,7 @@ const RequestQuote = () => {
             {status.state === 'success' ? (
               <div className="text-center py-12">
                 <FaCheckCircle className="text-emerald-500 text-5xl mx-auto mb-4" />
-                <p className="font-semibold text-xl text-secondary mb-2">Quote Request Submitted!</p>
+                <p className="font-semibold text-xl text-ink mb-2">Quote Request Submitted!</p>
                 <p className="text-muted">{status.message}</p>
               </div>
             ) : (

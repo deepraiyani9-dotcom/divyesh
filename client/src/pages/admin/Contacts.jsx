@@ -76,7 +76,7 @@ const Contacts = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewing(row)}
-            className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+            className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors"
           >
             <FaEye size={13} />
           </button>
@@ -94,7 +94,10 @@ const Contacts = () => {
   return (
     <div>
       <PageHeader title="Contact Enquiries" description="View and manage messages submitted through the contact form." />
-      <div className="card p-4 md:p-6">
+      <div
+        className="p-4 md:p-6 rounded-2xl border border-slate-300 shadow-md"
+        style={{ backgroundColor: '#ffffff', opacity: 1 }}
+      >
         <div className="mb-4">
           <SearchInput
             value={q}
@@ -115,34 +118,34 @@ const Contacts = () => {
             <div className="grid sm:grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Name</p>
-                <p className="text-secondary font-medium">{viewing.name}</p>
+                <p className="text-ink font-medium">{viewing.name}</p>
               </div>
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Company</p>
-                <p className="text-secondary font-medium">{viewing.companyName || '—'}</p>
+                <p className="text-ink font-medium">{viewing.companyName || '—'}</p>
               </div>
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Phone</p>
-                <p className="text-secondary font-medium">{viewing.phone}</p>
+                <p className="text-ink font-medium">{viewing.phone}</p>
               </div>
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Email</p>
-                <p className="text-secondary font-medium">{viewing.email}</p>
+                <p className="text-ink font-medium">{viewing.email}</p>
               </div>
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Location</p>
-                <p className="text-secondary font-medium">{[viewing.city, viewing.state].filter(Boolean).join(', ') || '—'}</p>
+                <p className="text-ink font-medium">{[viewing.city, viewing.state].filter(Boolean).join(', ') || '—'}</p>
               </div>
               <div>
                 <p className="text-muted text-xs uppercase font-semibold mb-1">Product / Quantity</p>
-                <p className="text-secondary font-medium">
+                <p className="text-ink font-medium">
                   {viewing.productInterested || '—'} {viewing.quantity ? `(${viewing.quantity})` : ''}
                 </p>
               </div>
             </div>
             <div>
               <p className="text-muted text-xs uppercase font-semibold mb-1">Message</p>
-              <p className="text-secondary/80 bg-surface p-3 rounded-lg">{viewing.message}</p>
+              <p className="text-ink/80 bg-surface p-3 rounded-lg">{viewing.message}</p>
             </div>
             <div>
               <label className="label-field">Update Status</label>

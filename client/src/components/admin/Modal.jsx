@@ -28,10 +28,10 @@ const Modal = ({ open, onClose, title, children, size = 'md', footer }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
-              <h3 className="font-semibold text-lg text-secondary">{title}</h3>
+              <h3 className="font-semibold text-lg text-ink">{title}</h3>
               <button
                 onClick={onClose}
-                className="text-muted hover:text-secondary hover:bg-slate-100 w-9 h-9 rounded-full flex items-center justify-center transition-colors"
+                className="text-muted hover:text-ink hover:bg-slate-100 w-9 h-9 rounded-full flex items-center justify-center transition-colors"
                 aria-label="Close"
               >
                 <FaTimes />

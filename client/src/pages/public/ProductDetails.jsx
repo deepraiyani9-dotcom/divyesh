@@ -56,7 +56,7 @@ const ProductDetails = () => {
   if (error || !product) {
     return (
       <div className="container-custom section-padding text-center">
-        <h2 className="text-2xl font-bold text-secondary mb-3">Product Not Found</h2>
+        <h2 className="text-2xl font-bold text-ink mb-3">Product Not Found</h2>
         <p className="text-muted mb-6">The product you're looking for doesn't exist or has been removed.</p>
         <Button to="/products">Browse All Products</Button>
       </div>
@@ -114,7 +114,7 @@ const ProductDetails = () => {
                 <FaTag size={10} /> {product.category.name}
               </span>
             )}
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary mb-4">{product.name}</h1>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-ink mb-4">{product.name}</h1>
             <p className="text-muted leading-relaxed mb-6">{product.shortDescription}</p>
 
             <div className="flex items-center gap-4 mb-6">
@@ -134,36 +134,36 @@ const ProductDetails = () => {
 
             {Object.values(specs).some(Boolean) && (
               <div className="card p-5 mb-6">
-                <h3 className="font-semibold text-secondary mb-3">Specifications</h3>
+                <h3 className="font-semibold text-ink mb-3">Specifications</h3>
                 <dl className="grid grid-cols-2 gap-4 text-sm">
                   {specs.diameter && (
                     <div>
                       <dt className="text-muted">Diameter</dt>
-                      <dd className="font-semibold text-secondary">{specs.diameter}</dd>
+                      <dd className="font-semibold text-ink">{specs.diameter}</dd>
                     </div>
                   )}
                   {specs.pressureRating && (
                     <div>
                       <dt className="text-muted">Pressure Rating</dt>
-                      <dd className="font-semibold text-secondary">{specs.pressureRating}</dd>
+                      <dd className="font-semibold text-ink">{specs.pressureRating}</dd>
                     </div>
                   )}
                   {specs.length && (
                     <div>
                       <dt className="text-muted">Length</dt>
-                      <dd className="font-semibold text-secondary">{specs.length}</dd>
+                      <dd className="font-semibold text-ink">{specs.length}</dd>
                     </div>
                   )}
                   {specs.material && (
                     <div>
                       <dt className="text-muted">Material</dt>
-                      <dd className="font-semibold text-secondary">{specs.material}</dd>
+                      <dd className="font-semibold text-ink">{specs.material}</dd>
                     </div>
                   )}
                   {specs.color && (
                     <div>
                       <dt className="text-muted">Color</dt>
-                      <dd className="font-semibold text-secondary">{specs.color}</dd>
+                      <dd className="font-semibold text-ink">{specs.color}</dd>
                     </div>
                   )}
                 </dl>
@@ -172,10 +172,10 @@ const ProductDetails = () => {
 
             {product.features?.length > 0 && (
               <div className="mb-6">
-                <h3 className="font-semibold text-secondary mb-3">Key Features</h3>
+                <h3 className="font-semibold text-ink mb-3">Key Features</h3>
                 <ul className="grid sm:grid-cols-2 gap-2.5">
                   {product.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-secondary/80">
+                    <li key={f} className="flex items-start gap-2 text-sm text-ink/80">
                       <FaCheckCircle className="text-primary mt-0.5 shrink-0" size={13} /> {f}
                     </li>
                   ))}
@@ -185,10 +185,10 @@ const ProductDetails = () => {
 
             {product.applications?.length > 0 && (
               <div>
-                <h3 className="font-semibold text-secondary mb-3">Applications</h3>
+                <h3 className="font-semibold text-ink mb-3">Applications</h3>
                 <div className="flex flex-wrap gap-2">
                   {product.applications.map((a) => (
-                    <span key={a} className="bg-surface border border-slate-200 text-secondary text-xs font-medium px-3 py-1.5 rounded-full">
+                    <span key={a} className="bg-surface border border-slate-200 text-ink text-xs font-medium px-3 py-1.5 rounded-full">
                       {a}
                     </span>
                   ))}
@@ -201,15 +201,15 @@ const ProductDetails = () => {
         {product.description && (
           <div className="container-custom mt-14">
             <div className="card p-6 md:p-8">
-              <h3 className="font-semibold text-xl text-secondary mb-4">Product Overview</h3>
-              <p className="text-secondary/80 leading-relaxed whitespace-pre-line">{product.description}</p>
+              <h3 className="font-semibold text-xl text-ink mb-4">Product Overview</h3>
+              <p className="text-ink/80 leading-relaxed whitespace-pre-line">{product.description}</p>
             </div>
           </div>
         )}
 
         {related.length > 0 && (
           <div className="container-custom mt-16">
-            <h3 className="font-bold text-2xl text-secondary mb-6">Related Products</h3>
+            <h3 className="font-bold text-2xl text-ink mb-6">Related Products</h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {related.map((p, i) => (
                 <ProductCard key={p._id} product={p} index={i} />

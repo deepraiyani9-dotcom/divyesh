@@ -96,7 +96,7 @@ const Infrastructure = () => {
                 {f.icon}
               </div>
               <div>
-                <h3 className="font-semibold text-secondary mb-2">{f.title}</h3>
+                <h3 className="font-semibold text-ink mb-2">{f.title}</h3>
                 <p className="text-sm text-muted">{f.description}</p>
               </div>
             </motion.div>

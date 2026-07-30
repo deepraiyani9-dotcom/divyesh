@@ -4,7 +4,7 @@ import { COMPANY } from '../../utils/constants';
 
 const Section = ({ title, children }) => (
   <div className="mb-8">
-    <h2 className="text-xl font-bold text-secondary mb-3">{title}</h2>
+    <h2 className="text-xl font-bold text-ink mb-3">{title}</h2>
     <div className="text-muted leading-relaxed space-y-3">{children}</div>
   </div>
 );

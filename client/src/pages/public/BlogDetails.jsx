@@ -43,7 +43,7 @@ const BlogDetails = () => {
   if (error || !blog) {
     return (
       <div className="container-custom section-padding text-center pt-32">
-        <h2 className="text-2xl font-bold text-secondary mb-3">Article Not Found</h2>
+        <h2 className="text-2xl font-bold text-ink mb-3">Article Not Found</h2>
         <p className="text-muted mb-6">The blog post you're looking for doesn't exist or has been removed.</p>
         <Button to="/blog">Back to Blog</Button>
       </div>
@@ -56,8 +56,8 @@ const BlogDetails = () => {
     <>
       <SEO title={blog.title} description={blog.excerpt} image={blog.coverImage ? resolveAssetUrl(blog.coverImage) : undefined} />
 
-      <div className="pt-28 md:pt-36 pb-10 md:pb-14 bg-secondary relative overflow-hidden">
-        <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, #0B5ED7 0%, transparent 45%)' }} />
+      <div className="pt-28 md:pt-36 pb-10 md:pb-14 bg-brand relative overflow-hidden">
+        <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, #0D7377 0%, transparent 45%)' }} />
         <div className="container-custom relative z-10 max-w-3xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             {blog.tags?.length > 0 && (
@@ -70,7 +70,7 @@ const BlogDetails = () => {
               </div>
             )}
             <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight mb-5">{blog.title}</h1>
-            <div className="flex items-center gap-5 text-slate-300 text-sm">
+            <div className="flex items-center gap-5 text-slate-100 text-sm">
               <span className="flex items-center gap-1.5">
                 <FaRegUser size={12} /> {blog.author || 'Lotus Agritech'}
               </span>
@@ -91,12 +91,12 @@ const BlogDetails = () => {
               className="w-full rounded-2xl mb-10 aspect-[16/9] object-cover"
             />
           )}
-          <article className="prose-content text-secondary/90 leading-relaxed whitespace-pre-line text-base md:text-lg">
+          <article className="prose-content text-ink/90 leading-relaxed whitespace-pre-line text-base md:text-lg">
             {blog.content}
           </article>
 
           <div className="flex items-center gap-3 mt-12 pt-8 border-t border-slate-100">
-            <span className="text-sm font-semibold text-secondary">Share this article:</span>
+            <span className="text-sm font-semibold text-ink">Share this article:</span>
             {[
               { icon: <FaWhatsapp />, href: `https://wa.me/?text=${encodeURIComponent(blog.title + ' ' + shareUrl)}`, color: 'bg-emerald-500' },
               { icon: <FaFacebookF />, href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, color: 'bg-blue-600' },
@@ -118,7 +118,7 @@ const BlogDetails = () => {
 
         {related.length > 0 && (
           <div className="container-custom mt-16">
-            <h3 className="font-bold text-2xl text-secondary mb-6">More Articles</h3>
+            <h3 className="font-bold text-2xl text-ink mb-6">More Articles</h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {related.map((b, i) => (
                 <BlogCard key={b._id} blog={b} index={i} />

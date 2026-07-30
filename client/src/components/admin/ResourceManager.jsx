@@ -155,14 +155,14 @@ const ResourceManager = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => openEdit(row)}
-            className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+            className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors"
             aria-label="Edit"
           >
             <FaEdit size={13} />
           </button>
           <button
             onClick={() => setDeleteTarget(row)}
-            className="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+            className="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors"
             aria-label="Delete"
           >
             <FaTrash size={13} />
@@ -183,7 +183,10 @@ const ResourceManager = ({
           </button>
         }
       />
-      <div className="card p-4 md:p-6">
+      <div
+        className="p-4 md:p-6 rounded-2xl border border-slate-300 shadow-md"
+        style={{ backgroundColor: '#ffffff', opacity: 1 }}
+      >
         {searchable && (
           <div className="mb-4">
             <SearchInput

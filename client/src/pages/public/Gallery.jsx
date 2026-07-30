@@ -43,7 +43,7 @@ const Gallery = () => {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
-                  activeCategory === cat ? 'bg-primary text-white shadow-lg' : 'bg-surface text-secondary hover:bg-slate-200'
+                  activeCategory === cat ? 'bg-primary text-white shadow-lg' : 'bg-surface text-ink hover:bg-slate-200'
                 }`}
               >
                 {cat}
@@ -74,7 +74,7 @@ const Gallery = () => {
                       e.currentTarget.src = FALLBACK_IMG;
                     }}
                   />
-                  <div className="absolute inset-0 bg-secondary/0 group-hover:bg-secondary/50 transition-colors flex items-end p-3">
+                  <div className="absolute inset-0 bg-brand/0 group-hover:bg-brand/50 transition-colors flex items-end p-3">
                     <span className="text-white text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
                       {item.title}
                     </span>

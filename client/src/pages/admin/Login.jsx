@@ -6,6 +6,7 @@ import { FaEnvelope, FaEye, FaEyeSlash, FaLock } from 'react-icons/fa';
 import SEO from '../../components/common/SEO.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { COMPANY } from '../../utils/constants';
+import logo from '../../assets/logo.png';
 
 const Login = () => {
   const { login, isAuthenticated, loading } = useAuth();
@@ -40,10 +41,10 @@ const Login = () => {
   return (
     <>
       <SEO title="Admin Login" description="Lotus Agritech admin panel login." />
-      <div className="min-h-screen flex items-center justify-center bg-secondary relative overflow-hidden px-4">
+      <div className="min-h-screen flex items-center justify-center bg-brand relative overflow-hidden px-4">
         <div
           className="absolute inset-0 opacity-15"
-          style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, #0B5ED7 0%, transparent 45%), radial-gradient(circle at 80% 80%, #F97316 0%, transparent 40%)' }}
+          style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, #0D7377 0%, transparent 45%), radial-gradient(circle at 80% 80%, #E07A3D 0%, transparent 40%)' }}
         />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,10 +53,12 @@ const Login = () => {
           className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 md:p-10 relative z-10"
         >
           <div className="text-center mb-8">
-            <span className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
-              LA
-            </span>
-            <h1 className="text-xl font-bold text-secondary">{COMPANY.name} Admin</h1>
+            <img
+              src={logo}
+              alt={COMPANY.name}
+              className="h-16 w-16 object-contain rounded-full mx-auto mb-4"
+            />
+            <h1 className="text-xl font-bold text-ink">{COMPANY.name} Admin</h1>
             <p className="text-sm text-muted mt-1">Sign in to manage your website</p>
           </div>
 

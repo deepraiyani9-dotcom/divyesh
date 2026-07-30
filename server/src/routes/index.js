@@ -5,6 +5,7 @@ const { upload } = require('../middleware/upload');
 const publicCtrl = require('../controllers/publicController');
 const analytics = require('../controllers/analyticsController');
 const settings = require('../controllers/settingsController');
+const search = require('../controllers/searchController');
 const {
   productController,
   categoryController,
@@ -67,6 +68,7 @@ router.post('/subscribe', publicCtrl.subscribe);
 router.post('/apply', upload.single('resume'), publicCtrl.applyJob);
 
 router.get('/analytics', protect, authorize('admin', 'editor', 'viewer'), analytics.getAnalytics);
+router.get('/search', protect, authorize('admin', 'editor', 'viewer'), search.globalSearch);
 router.get('/settings', settings.getSettings);
 router.put('/settings', protect, authorize('admin'), settings.updateSettings);
 

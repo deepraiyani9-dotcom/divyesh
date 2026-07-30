@@ -32,7 +32,9 @@ const NewsletterForm = ({ dark = false }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className={`flex-1 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent ${
-            dark ? 'bg-white/10 text-white placeholder:text-slate-400 border border-white/10' : 'input-field'
+            dark
+              ? 'bg-white text-[#2C3340] placeholder:text-slate-500 border border-white'
+              : 'input-field'
           }`}
         />
         <button
