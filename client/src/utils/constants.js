@@ -34,7 +34,6 @@ export const COLORS = {
 
 export const NAV_LINKS = [
   { label: 'Home', to: '/' },
-  { label: 'About', to: '/about' },
   { label: 'Products', to: '/products' },
   { label: 'Industries', to: '/industries' },
   {
@@ -47,6 +46,7 @@ export const NAV_LINKS = [
       { label: 'Certificates', to: '/certificates' },
     ],
   },
+  { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
 ];
 
