@@ -50,14 +50,14 @@ const Header = () => {
                   <FaChevronDown size={10} className="group-hover:rotate-180 transition-transform" />
                 </button>
                 <div className="absolute left-0 top-full pt-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-1 group-hover:translate-y-0 transition-all duration-200">
-                  <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-2">
+                  <div className="nav-dropdown bg-white rounded-2xl shadow-2xl border border-slate-100 p-2">
                     {link.children.map((child) => (
                       <NavLink
                         key={child.to}
                         to={child.to}
-                        className="nav-btn w-full justify-start mb-2"
+                        className={({ isActive }) => `nav-btn${isActive ? ' active' : ''}`}
                       >
-                        {child.label}
+                        <span>{child.label}</span>
                       </NavLink>
                     ))}
                   </div>
@@ -65,7 +65,7 @@ const Header = () => {
               </div>
             ) : (
               <NavLink key={link.to} to={link.to} className={navBtnClass} end={link.to === '/'}>
-                {link.label}
+                <span>{link.label}</span>
               </NavLink>
             )
           )}

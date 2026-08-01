@@ -7,9 +7,31 @@ const STROKE = 3.5;
 const RADIUS = (SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
+/** Ease-in-out cubic for a calm, slow scroll */
+const easeInOutCubic = (t) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+const smoothScrollToTop = (durationMs = 1500) => {
+  const startY = window.scrollY || document.documentElement.scrollTop;
+  if (startY <= 0) return;
+
+  const startTime = performance.now();
+
+  const step = (now) => {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / durationMs, 1);
+    const y = startY * (1 - easeInOutCubic(progress));
+    window.scrollTo(0, y);
+    if (progress < 1) requestAnimationFrame(step);
+  };
+
+  requestAnimationFrame(step);
+};
+
 const BackToTop = () => {
   const [visible, setVisible] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [scrolling, setScrolling] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -25,7 +47,16 @@ const BackToTop = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollTop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (scrolling) return;
+    setScrolling(true);
+    // Stay on the same page — slow slide to top in 1.50s
+    const duration = 1500;
+    smoothScrollToTop(duration);
+    window.setTimeout(() => setScrolling(false), duration + 50);
+  };
 
   return (
     <AnimatePresence>
