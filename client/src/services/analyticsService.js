@@ -1,3 +1,5 @@
 import api from './api';
 
-export const getAnalytics = () => api.get('/analytics').then((res) => res.data);
+export const getAnalytics = (params = {}) =>
+  api.get('/analytics', { params }).then((res) => res.data);
+

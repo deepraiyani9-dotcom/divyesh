@@ -6,6 +6,7 @@ const publicCtrl = require('../controllers/publicController');
 const analytics = require('../controllers/analyticsController');
 const settings = require('../controllers/settingsController');
 const search = require('../controllers/searchController');
+const quoteReply = require('../controllers/quoteReplyController');
 const {
   productController,
   categoryController,
@@ -53,6 +54,7 @@ router.delete('/contacts/:id', protect, authorize('admin'), contactController.re
 router.get('/quotes', protect, authorize('admin', 'editor', 'viewer'), quoteController.getAll);
 router.get('/quotes/:id', protect, authorize('admin', 'editor', 'viewer'), quoteController.getOne);
 router.put('/quotes/:id', protect, authorize('admin', 'editor'), quoteController.update);
+router.post('/quotes/:id/reply', protect, authorize('admin', 'editor'), quoteReply.replyToQuote);
 router.delete('/quotes/:id', protect, authorize('admin'), quoteController.remove);
 
 router.get('/applications', protect, authorize('admin', 'editor', 'viewer'), jobApplicationController.getAll);

@@ -23,6 +23,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { COMPANY } from '../utils/constants';
 import logo from '../assets/logo.png';
 import GlobalSearch from '../components/admin/GlobalSearch.jsx';
+import EnquiryNotifier from '../components/admin/EnquiryNotifier.jsx';
 
 const NAV = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: <FaChartLine /> },
@@ -182,6 +183,7 @@ const AdminLayout = () => {
         <main className="flex-1 p-4 md:p-6 bg-secondary">
           <Outlet />
         </main>
+        <EnquiryNotifier />
       </div>
     </div>
   );
