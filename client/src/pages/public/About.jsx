@@ -14,14 +14,6 @@ const VALUES = [
   { title: 'Customer Trust', icon: <FaHandshake />, description: 'Long-term relationships built on reliability, consistency and support.' },
 ];
 
-const TIMELINE = [
-  { year: '2010', title: 'Company Founded', description: 'Lotus Agritech began operations with a single extrusion line in Dwarka.' },
-  { year: '2014', title: 'Facility Expansion', description: 'Expanded manufacturing capacity to meet growing regional demand.' },
-  { year: '2018', title: 'ISO Certification', description: 'Achieved ISO 9001:2015 certification for quality management systems.' },
-  { year: '2022', title: 'Product Diversification', description: 'Launched dedicated UPVC agricultural and industrial pipe ranges.' },
-  { year: 'Today', title: 'Regional Leader', description: 'Serving thousands of farmers, builders and dealers across Gujarat and beyond.' },
-];
-
 const About = () => {
   return (
     <>
@@ -113,36 +105,6 @@ const About = () => {
                 </div>
                 <h3 className="font-semibold text-ink mb-2">{v.title}</h3>
                 <p className="text-sm text-muted">{v.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-padding bg-brand relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, #0D7377 0%, transparent 45%)' }} />
-        <div className="container-custom relative z-10">
-          <SectionTitle light eyebrow="Our Journey" title="Milestones Along the Way" />
-          <div className="max-w-3xl mx-auto">
-            {TIMELINE.map((item, i) => (
-              <motion.div
-                key={item.year}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="flex gap-6 pb-10 last:pb-0 relative"
-              >
-                <div className="flex flex-col items-center shrink-0">
-                  <span className="w-14 h-14 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center shadow-lg">
-                    {item.year}
-                  </span>
-                  {i < TIMELINE.length - 1 && <span className="w-px flex-1 bg-white/15 mt-2" />}
-                </div>
-                <div className="pt-2">
-                  <h4 className="font-semibold text-white mb-1.5">{item.title}</h4>
-                  <p className="text-sm text-slate-100">{item.description}</p>
-                </div>
               </motion.div>
             ))}
           </div>

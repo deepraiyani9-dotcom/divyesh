@@ -11,7 +11,7 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const easeInOutCubic = (t) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-const smoothScrollToTop = (durationMs = 1500) => {
+const smoothScrollToTop = (durationMs = 1250) => {
   const startY = window.scrollY || document.documentElement.scrollTop;
   if (startY <= 0) return;
 
@@ -52,8 +52,8 @@ const BackToTop = () => {
     e.stopPropagation();
     if (scrolling) return;
     setScrolling(true);
-    // Stay on the same page — slow slide to top in 1.50s
-    const duration = 1500;
+    // Stay on the same page — slow slide to top in 1.25s
+    const duration = 1250;
     smoothScrollToTop(duration);
     window.setTimeout(() => setScrolling(false), duration + 50);
   };
