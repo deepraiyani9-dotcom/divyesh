@@ -18,13 +18,15 @@ const ProductCard = ({ product, index = 0 }) => {
       className="bg-white border border-gray-200 rounded-2xl shadow-sm group overflow-hidden flex flex-col h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
       style={{ opacity: 1, backgroundColor: '#FFFFFF' }}
     >
-      <Link to={`/products/${product.slug}`} className="relative overflow-hidden aspect-[4/3] bg-secondary block">
+      <Link to={`/products/${product.slug}`} className="relative overflow-hidden aspect-[4/3] min-h-[200px] bg-slate-100 block">
         <img
           src={image}
           alt={product.name}
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           onError={(e) => {
+            if (e.currentTarget.dataset.fallback === '1') return;
+            e.currentTarget.dataset.fallback = '1';
             e.currentTarget.src = FALLBACK_IMG;
           }}
         />

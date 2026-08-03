@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema(
     phone: { type: String, default: '' },
     avatar: { type: String, default: '' },
     isActive: { type: Boolean, default: true },
+    resetPasswordToken: { type: String, select: false },
+    resetPasswordExpire: { type: Date, select: false },
   },
   { timestamps: true }
 );

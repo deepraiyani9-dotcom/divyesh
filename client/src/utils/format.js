@@ -68,10 +68,31 @@ export const toArray = (value) => {
 
 export const fromArray = (value) => (Array.isArray(value) ? value.join(', ') : value || '');
 
+/** Base URL where Express serves /uploads (API host, not Vite). */
+export const getAssetBaseUrl = () => {
+  const api = import.meta.env.VITE_API_URL || '';
+  if (api) {
+    try {
+      const url = new URL(api, typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173');
+      return url.origin;
+    } catch {
+      /* fall through */
+    }
+  }
+  // Local Vite → Express uploads
+  if (import.meta.env.DEV) return 'http://localhost:5000';
+  return typeof window !== 'undefined' ? window.location.origin : '';
+};
+
 export const resolveAssetUrl = (path) => {
   if (!path) return '';
-  if (path.startsWith('http') || path.startsWith('blob:') || path.startsWith('data:')) return path;
-  return path.startsWith('/') ? path : `/${path}`;
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('blob:') || path.startsWith('data:')) {
+    return path;
+  }
+  const normalized = path.startsWith('/') ? path : `/${path}`;
+  const base = getAssetBaseUrl();
+  if (!base) return normalized;
+  return `${base.replace(/\/$/, '')}${normalized}`;
 };
 
 export const initials = (name = '') =>

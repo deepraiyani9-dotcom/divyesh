@@ -78,7 +78,12 @@ app.use(
   })
 );
 
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'), {
+  setHeaders: (res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'public, max-age=31536000');
+  },
+}));
 
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: 'Lotus Agritech API is running' });

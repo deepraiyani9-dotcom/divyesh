@@ -76,9 +76,11 @@ router.put('/settings', protect, authorize('admin'), settings.updateSettings);
 
 router.post('/upload', protect, authorize('admin', 'editor'), upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
+  const relative = `/uploads/${req.file.filename}`;
+  const absolute = `${req.protocol}://${req.get('host')}${relative}`;
   res.status(201).json({
     success: true,
-    data: { filename: req.file.filename, url: `/uploads/${req.file.filename}` },
+    data: { filename: req.file.filename, url: relative, absoluteUrl: absolute },
   });
 });
 

@@ -31,6 +31,7 @@ const NotFound = lazy(() => import('./pages/public/NotFound.jsx'));
 
 // Admin pages
 const AdminLogin = lazy(() => import('./pages/admin/Login.jsx'));
+const AdminResetPassword = lazy(() => import('./pages/admin/ResetPassword.jsx'));
 const AdminDashboard = lazy(() => import('./pages/admin/Dashboard.jsx'));
 const AdminProducts = lazy(() => import('./pages/admin/Products.jsx'));
 const AdminCategories = lazy(() => import('./pages/admin/Categories.jsx'));
@@ -76,6 +77,7 @@ function AppRoutes() {
 
         {/* Admin auth */}
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/reset-password/:token" element={<AdminResetPassword />} />
 
         {/* Admin protected */}
         <Route
