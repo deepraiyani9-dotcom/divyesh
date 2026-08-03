@@ -18,7 +18,9 @@ const ImageUploader = ({ value, onChange, multiple = false }) => {
       const uploaded = [];
       for (const file of Array.from(files)) {
         const res = await uploadFile(file);
-        uploaded.push(res.data.url);
+        const url = res.data?.url || res.data?.absoluteUrl;
+        if (!url) throw new Error('Upload returned no URL');
+        uploaded.push(url);
       }
       if (multiple) {
         onChange([...(Array.isArray(value) ? value : []), ...uploaded]);

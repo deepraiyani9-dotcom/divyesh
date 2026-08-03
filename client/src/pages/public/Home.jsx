@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import {
   FaArrowRight,
-  FaAward,
   FaBoxes,
   FaCheckCircle,
   FaCogs,
@@ -17,18 +16,13 @@ import SEO from '../../components/common/SEO.jsx';
 import SectionTitle from '../../components/common/SectionTitle.jsx';
 import Button from '../../components/common/Button.jsx';
 import ProductCard from '../../components/common/ProductCard.jsx';
-import BlogCard from '../../components/common/BlogCard.jsx';
-import TestimonialCard from '../../components/common/TestimonialCard.jsx';
 import ContactCTA from '../../components/common/ContactCTA.jsx';
 import GoogleMapEmbed from '../../components/common/GoogleMapEmbed.jsx';
 import LoadingSpinner from '../../components/common/LoadingSpinner.jsx';
+import ManufacturingFlow from '../../components/common/ManufacturingFlow.jsx';
 import useFetch from '../../hooks/useFetch.js';
 import { getProducts } from '../../services/productService';
-import { getBlogs } from '../../services/blogService';
-import { getTestimonials } from '../../services/testimonialService';
-import { getCertificates } from '../../services/certificateService';
-import { COMPANY, INDUSTRIES, MANUFACTURING_STEPS, WHY_CHOOSE_US } from '../../utils/constants';
-import { resolveAssetUrl } from '../../utils/format';
+import { COMPANY, INDUSTRIES, WHY_CHOOSE_US } from '../../utils/constants';
 import heroImg from '../../assets/hero-pvc.png';
 import introPipesImg from '../../assets/intro-pipes.png';
 import whyChooseBg from '../../assets/why-choose-bg.png';
@@ -47,20 +41,8 @@ const Home = () => {
     () => getProducts({ isFeatured: true, limit: 6 }),
     []
   );
-  const { data: blogsRes, loading: loadingBlogs } = useFetch(() => getBlogs({ limit: 3, isPublished: true }), []);
-  const { data: testimonialsRes, loading: loadingTestimonials } = useFetch(
-    () => getTestimonials({ limit: 6, isActive: true }),
-    []
-  );
-  const { data: certificatesRes, loading: loadingCertificates } = useFetch(
-    () => getCertificates({ limit: 8, isActive: true }),
-    []
-  );
 
   const products = productsRes?.data || [];
-  const blogs = blogsRes?.data || [];
-  const testimonials = testimonialsRes?.data || [];
-  const certificates = certificatesRes?.data || [];
 
   return (
     <>
@@ -316,124 +298,14 @@ const Home = () => {
       </section>
 
       {/* MANUFACTURING PROCESS */}
-      <section className="section-padding">
-        <div className="container-custom">
-          <SectionTitle
-            eyebrow="How It's Made"
-            title="Our Manufacturing Process"
-            description="A precise, quality-controlled journey from raw resin to the finished pipe in your hands."
-          />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {MANUFACTURING_STEPS.map((step, i) => (
-              <motion.div
-                key={step.step}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="relative card p-6 pt-10"
-              >
-                <span className="absolute -top-5 left-6 w-10 h-10 rounded-xl bg-primary text-white font-bold flex items-center justify-center shadow-lg">
-                  {step.step}
-                </span>
-                <h3 className="font-semibold text-ink mb-2 mt-2">{step.title}</h3>
-                <p className="text-sm text-muted">{step.description}</p>
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Button to="/manufacturing-process" variant="primary" icon={<FaArrowRight />}>
-              See How We Manufacture
-            </Button>
-          </div>
+      <ManufacturingFlow showTitle />
+      <div className="bg-white pb-14 -mt-2 relative z-10">
+        <div className="container-custom text-center">
+          <Button to="/manufacturing-process" variant="primary" icon={<FaArrowRight />}>
+            See How We Manufacture
+          </Button>
         </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section className="section-padding">
-        <div className="container-custom">
-          <SectionTitle
-            eyebrow="Client Stories"
-            title="What Our Clients Say"
-            description="Real feedback from the farmers, dealers and builders we serve every day."
-          />
-          {loadingTestimonials ? (
-            <LoadingSpinner />
-          ) : testimonials.length ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {testimonials.slice(0, 6).map((t, i) => (
-                <TestimonialCard key={t._id} testimonial={t} index={i} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-muted">Testimonials coming soon.</p>
-          )}
-        </div>
-      </section>
-
-      {/* CERTIFICATES */}
-      {!loadingCertificates && certificates.length > 0 && (
-        <section className="section-padding bg-secondary">
-          <div className="container-custom">
-            <SectionTitle
-              eyebrow="Quality Assured"
-              title="Certifications & Standards"
-              description="Our commitment to quality is backed by recognized industry certifications."
-            />
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-              {certificates.slice(0, 8).map((cert, i) => (
-                <motion.div
-                  key={cert._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.06 }}
-                  className="card p-5 text-center flex flex-col items-center gap-3"
-                >
-                  {cert.image ? (
-                    <img src={resolveAssetUrl(cert.image)} alt={cert.title} className="h-16 object-contain" />
-                  ) : (
-                    <FaAward className="text-primary text-3xl" />
-                  )}
-                  <p className="text-sm font-semibold text-ink">{cert.title}</p>
-                </motion.div>
-              ))}
-            </div>
-            <div className="text-center mt-10">
-              <Button to="/certificates" variant="accent" icon={<FaArrowRight />}>
-                View All Certificates
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* LATEST BLOGS */}
-      <section className="section-padding">
-        <div className="container-custom">
-          <SectionTitle
-            eyebrow="Resources"
-            title="Latest From Our Blog"
-            description="Tips, guides and industry insights on PVC & UPVC piping solutions."
-          />
-          {loadingBlogs ? (
-            <LoadingSpinner />
-          ) : blogs.length ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {blogs.map((b, i) => (
-                <BlogCard key={b._id} blog={b} index={i} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-muted">Articles coming soon.</p>
-          )}
-          <div className="text-center mt-10">
-            <Button to="/blog" variant="accent" icon={<FaArrowRight />}>
-              Read Latest Articles
-            </Button>
-          </div>
-        </div>
-      </section>
+      </div>
 
       <ContactCTA />
 

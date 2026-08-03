@@ -23,6 +23,7 @@ const ProductCard = ({ product, index = 0 }) => {
           src={image}
           alt={product.name}
           loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           onError={(e) => {
             if (e.currentTarget.dataset.fallback === '1') return;

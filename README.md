@@ -136,9 +136,19 @@ Base URL: `/api`
 1. Import repo, root `client`.
 2. Build: `npm run build`
 3. Output: `dist`
-4. Env: `VITE_API_URL=https://YOUR-API.onrender.com/api` (if not using same-origin proxy).
+4. **Required env on Vercel:**
+   - `VITE_API_URL=https://YOUR-API.onrender.com/api`
+5. Redeploy after adding env (Vite bakes env at build time).
 
-If the client talks to a separate API origin, ensure `api.js` uses `import.meta.env.VITE_API_URL` and Render CORS `CLIENT_URL` matches the Vercel domain.
+### Product images on Vercel (important)
+
+Vercel only hosts the React site. Files in `/uploads` live on the **API server** (or Cloudinary).
+
+1. Set `VITE_API_URL` on Vercel (see above) so images resolve to `https://YOUR-API.../uploads/...`
+2. Prefer **Cloudinary** on the API (set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` on Render). New uploads then save as full `https://res.cloudinary.com/...` URLs that work everywhere.
+3. Re-upload product photos in admin after Cloudinary is configured (old local `/uploads/...` paths only work while those files exist on the API host).
+
+If the client talks to a separate API origin, ensure Render CORS `CLIENT_URL` matches the Vercel domain.
 
 ## Company
 

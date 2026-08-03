@@ -55,9 +55,15 @@ exports.subscribe = asyncHandler(async (req, res) => {
 });
 
 exports.applyJob = asyncHandler(async (req, res) => {
+  let resumeUrl = req.body.resumeUrl || '';
+  if (req.file) {
+    const { persistUpload } = require('../middleware/upload');
+    const saved = await persistUpload(req, req.file);
+    resumeUrl = saved.url;
+  }
   const application = await JobApplication.create({
     ...req.body,
-    resumeUrl: req.file ? `/uploads/${req.file.filename}` : req.body.resumeUrl,
+    resumeUrl,
   });
   res.status(201).json({ success: true, data: application });
 });

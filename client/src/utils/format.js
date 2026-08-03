@@ -68,31 +68,56 @@ export const toArray = (value) => {
 
 export const fromArray = (value) => (Array.isArray(value) ? value.join(', ') : value || '');
 
-/** Base URL where Express serves /uploads (API host, not Vite). */
+/** Base URL where Express serves /uploads (API host — never the Vercel frontend). */
 export const getAssetBaseUrl = () => {
-  const api = import.meta.env.VITE_API_URL || '';
+  const assetOverride = (import.meta.env.VITE_ASSET_URL || '').trim();
+  if (assetOverride) return assetOverride.replace(/\/$/, '');
+
+  const api = (import.meta.env.VITE_API_URL || '').trim();
   if (api) {
     try {
       const url = new URL(api, typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173');
+      // Strip trailing /api path → origin only (uploads live at host/uploads)
       return url.origin;
     } catch {
       /* fall through */
     }
   }
-  // Local Vite → Express uploads
+
   if (import.meta.env.DEV) return 'http://localhost:5000';
-  return typeof window !== 'undefined' ? window.location.origin : '';
+
+  // Production without VITE_API_URL cannot load /uploads from Vercel — return empty
+  // so relative paths stay relative (broken) rather than pointing at wrong host.
+  // Set VITE_API_URL=https://YOUR-API.onrender.com/api in Vercel env.
+  return '';
 };
 
+/**
+ * Resolve product/gallery image paths for <img src>.
+ * - Full http(s) / Cloudinary URLs → unchanged
+ * - /uploads/... → prefixed with API origin (local or Render)
+ */
 export const resolveAssetUrl = (path) => {
   if (!path) return '';
-  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('blob:') || path.startsWith('data:')) {
-    return path;
+  const raw = String(path).trim();
+  if (!raw) return '';
+
+  if (/^(https?:|blob:|data:)/i.test(raw)) return raw;
+
+  // Already a Cloudinary-style path without protocol (rare)
+  if (raw.includes('res.cloudinary.com')) {
+    return raw.startsWith('//') ? `https:${raw}` : `https://${raw.replace(/^\/+/, '')}`;
   }
-  const normalized = path.startsWith('/') ? path : `/${path}`;
+
+  const normalized = raw.startsWith('/') ? raw : `/${raw}`;
   const base = getAssetBaseUrl();
-  if (!base) return normalized;
-  return `${base.replace(/\/$/, '')}${normalized}`;
+
+  if (base) return `${base.replace(/\/$/, '')}${normalized}`;
+
+  // Dev proxy fallback
+  if (import.meta.env.DEV) return `http://localhost:5000${normalized}`;
+
+  return normalized;
 };
 
 export const initials = (name = '') =>

@@ -1,40 +1,82 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { isCloudinaryConfigured } = require('../config/cloudinary');
+const { cloudinary, isCloudinaryConfigured } = require('../config/cloudinary');
 
 const uploadDir = path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadDir),
-  filename: (_req, file, cb) => {
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${unique}${path.extname(file.originalname)}`);
+const memoryUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const allowed = /jpeg|jpg|png|webp|pdf|doc|docx/;
+    const ext = path.extname(file.originalname).toLowerCase().replace('.', '');
+    const ok = allowed.test(ext) || allowed.test(file.mimetype);
+    if (!ok) return cb(new Error('Invalid file type. Use JPG, PNG or WEBP.'));
+    cb(null, true);
   },
 });
 
-const fileFilter = (_req, file, cb) => {
-  const allowed = /jpeg|jpg|png|webp|pdf|doc|docx/;
-  const ext = path.extname(file.originalname).toLowerCase().replace('.', '');
-  const ok = allowed.test(ext) || allowed.test(file.mimetype);
-  if (!ok) return cb(new Error('Invalid file type'));
-  cb(null, true);
+const uploadToCloudinary = (file) =>
+  new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'lotus-agritech',
+        resource_type: 'auto',
+      },
+      (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      }
+    );
+    stream.end(file.buffer);
+  });
+
+const saveToDisk = (file) => {
+  const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+  const filename = `${unique}${path.extname(file.originalname) || '.jpg'}`;
+  const fullPath = path.join(uploadDir, filename);
+  fs.writeFileSync(fullPath, file.buffer);
+  return filename;
 };
 
-const upload = multer({
-  storage,
-  limits: { fileSize: 8 * 1024 * 1024 },
-  fileFilter,
-});
+/**
+ * Persist uploaded file → Cloudinary (preferred) or local /uploads.
+ * Returns a public URL string to store on the product document.
+ */
+const persistUpload = async (req, file) => {
+  if (!file) return { url: '', storage: 'none' };
+
+  if (isCloudinaryConfigured()) {
+    const result = await uploadToCloudinary(file);
+    return {
+      url: result.secure_url,
+      filename: result.public_id,
+      storage: 'cloudinary',
+    };
+  }
+
+  const filename = saveToDisk(file);
+  const relative = `/uploads/${filename}`;
+  const host = req.get('host');
+  const proto = (req.headers['x-forwarded-proto'] || req.protocol || 'http').split(',')[0].trim();
+  const absolute = host ? `${proto}://${host}${relative}` : relative;
+  return { url: absolute, filename, storage: 'local' };
+};
 
 const getFileUrl = (req, filename) => {
   if (!filename) return '';
-  if (filename.startsWith('http')) return filename;
+  if (String(filename).startsWith('http')) return filename;
   const base = `${req.protocol}://${req.get('host')}`;
-  return `${base}/uploads/${filename}`;
+  return `${base}/uploads/${String(filename).replace(/^\/?uploads\//, '')}`;
 };
 
-module.exports = { upload, getFileUrl, isCloudinaryConfigured };
+module.exports = {
+  upload: memoryUpload,
+  persistUpload,
+  getFileUrl,
+  isCloudinaryConfigured,
+};

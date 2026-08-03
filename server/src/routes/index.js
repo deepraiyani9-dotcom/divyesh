@@ -1,7 +1,7 @@
 const express = require('express');
 const { protect, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validate');
-const { upload } = require('../middleware/upload');
+const { upload, persistUpload, isCloudinaryConfigured } = require('../middleware/upload');
 const publicCtrl = require('../controllers/publicController');
 const analytics = require('../controllers/analyticsController');
 const settings = require('../controllers/settingsController');
@@ -74,14 +74,22 @@ router.get('/search', protect, authorize('admin', 'editor', 'viewer'), search.gl
 router.get('/settings', settings.getSettings);
 router.put('/settings', protect, authorize('admin'), settings.updateSettings);
 
-router.post('/upload', protect, authorize('admin', 'editor'), upload.single('file'), (req, res) => {
-  if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
-  const relative = `/uploads/${req.file.filename}`;
-  const absolute = `${req.protocol}://${req.get('host')}${relative}`;
-  res.status(201).json({
-    success: true,
-    data: { filename: req.file.filename, url: relative, absoluteUrl: absolute },
-  });
+router.post('/upload', protect, authorize('admin', 'editor'), upload.single('file'), async (req, res, next) => {
+  try {
+    if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
+    const saved = await persistUpload(req, req.file);
+    res.status(201).json({
+      success: true,
+      data: {
+        filename: saved.filename,
+        url: saved.url,
+        storage: saved.storage,
+        cloudinary: isCloudinaryConfigured(),
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;
