@@ -31,6 +31,7 @@ import { COMPANY, INDUSTRIES, MANUFACTURING_STEPS, WHY_CHOOSE_US } from '../../u
 import { resolveAssetUrl } from '../../utils/format';
 import heroImg from '../../assets/hero-pvc.png';
 import introPipesImg from '../../assets/intro-pipes.png';
+import whyChooseBg from '../../assets/why-choose-bg.png';
 
 const ICONS = { FaMedal, FaCogs, FaTruck, FaHeadset };
 
@@ -205,8 +206,14 @@ const Home = () => {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="section-padding bg-secondary">
-        <div className="container-custom">
+      <section className="section-padding relative overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${whyChooseBg})` }}
+          aria-hidden
+        />
+        <div className="absolute inset-0 bg-secondary/85" aria-hidden />
+        <div className="container-custom relative z-10">
           <SectionTitle
             eyebrow="Why Choose Us"
             title="Engineered for Durability. Trusted for Reliability."
@@ -222,7 +229,7 @@ const Home = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="card p-6 text-center hover:-translate-y-2 transition-transform"
+                  className="card p-6 text-center hover:-translate-y-2 transition-transform bg-white/95"
                 >
                   <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-2xl mx-auto mb-4">
                     {Icon ? <Icon /> : <FaMedal />}
