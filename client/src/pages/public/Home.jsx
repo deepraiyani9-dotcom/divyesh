@@ -212,7 +212,7 @@ const Home = () => {
           style={{ backgroundImage: `url(${whyChooseBg})` }}
           aria-hidden
         />
-        <div className="absolute inset-0 bg-secondary/85" aria-hidden />
+        <div className="absolute inset-0 bg-secondary/72" aria-hidden />
         <div className="container-custom relative z-10">
           <SectionTitle
             eyebrow="Why Choose Us"
