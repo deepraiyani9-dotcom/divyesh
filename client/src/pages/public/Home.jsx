@@ -207,12 +207,17 @@ const Home = () => {
 
       {/* WHY CHOOSE US */}
       <section className="section-padding relative overflow-hidden">
+        <img
+          src={whyChooseBg}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
+        />
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${whyChooseBg})` }}
+          className="pointer-events-none absolute inset-0 z-[1]"
+          style={{ backgroundColor: 'rgba(250, 251, 252, 0.68)' }}
           aria-hidden
         />
-        <div className="absolute inset-0 bg-secondary/72" aria-hidden />
         <div className="container-custom relative z-10">
           <SectionTitle
             eyebrow="Why Choose Us"
@@ -229,7 +234,7 @@ const Home = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="card p-6 text-center hover:-translate-y-2 transition-transform bg-white/95"
+                  className="card p-6 text-center hover:-translate-y-2 transition-transform bg-white/95 backdrop-blur-[2px]"
                 >
                   <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-2xl mx-auto mb-4">
                     {Icon ? <Icon /> : <FaMedal />}
