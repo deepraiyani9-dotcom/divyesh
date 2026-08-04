@@ -55,11 +55,14 @@ const Subscribers = () => {
     setStatus(null);
     try {
       const res = await subscribeService.broadcastNewsletter({ subject, message });
-      setStatus({
-        type: res.data?.smtpConfigured ? 'success' : 'warning',
-        text: res.message || 'Done',
-      });
-      if (res.data?.smtpConfigured) {
+      const failed = res.data?.failed || 0;
+      const sent = res.data?.sent || 0;
+      if (failed > 0 && sent === 0) {
+        setStatus({ type: 'error', text: res.message || 'Could not send emails. Please try again.' });
+      } else if (failed > 0) {
+        setStatus({ type: 'warning', text: res.message || `Sent to ${sent}, failed ${failed}.` });
+      } else {
+        setStatus({ type: 'success', text: res.message || `Email sent to ${sent} subscriber(s).` });
         setSubject('');
         setMessage('');
       }
@@ -112,11 +115,6 @@ const Subscribers = () => {
         <h3 className="font-semibold text-ink flex items-center gap-2">
           <FaPaperPlane className="text-primary" /> Send newsletter email
         </h3>
-        <p className="text-sm text-muted">
-          Real emails need Gmail SMTP in <code className="text-xs bg-slate-100 px-1 rounded">server/.env</code>
-          {' '}(<code className="text-xs bg-slate-100 px-1 rounded">SMTP_USER</code> +{' '}
-          <code className="text-xs bg-slate-100 px-1 rounded">SMTP_PASS</code> app password).
-        </p>
         <div>
           <label className="label-field">Subject *</label>
           <input

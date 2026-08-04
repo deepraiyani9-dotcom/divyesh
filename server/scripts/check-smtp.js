@@ -2,19 +2,17 @@ require('dotenv').config();
 const nodemailer = require('nodemailer');
 
 const user = (process.env.SMTP_USER || '').trim();
-const raw = process.env.SMTP_PASS || '';
-const pass = raw.trim().replace(/^["']|["']$/g, '').replace(/ /g, '');
-const from = process.env.MAIL_FROM || '';
+const pass = String(process.env.SMTP_PASS || '')
+  .trim()
+  .replace(/^["']|["']$/g, '')
+  .replace(/\s+/g, '');
 
 console.log('USER:', user);
-console.log('PASS raw length:', raw.length);
-console.log('PASS cleaned length:', pass.length);
-console.log('PASS has spaces:', raw.includes(' '));
-console.log('FROM:', from);
-console.log('FROM matches USER:', from.toLowerCase().includes(user.toLowerCase()));
+console.log('PASS length:', pass.length);
+console.log('Looks like App Password (16 chars):', pass.length === 16 && /^[a-zA-Z0-9]+$/.test(pass));
 
 if (!user || !pass) {
-  console.log('STATUS: missing credentials');
+  console.log('STATUS: missing');
   process.exit(1);
 }
 
@@ -27,5 +25,5 @@ const transporter = nodemailer.createTransport({
 
 transporter
   .verify()
-  .then(() => console.log('STATUS: SMTP OK - can send'))
+  .then(() => console.log('STATUS: SMTP OK'))
   .catch((e) => console.log('STATUS: SMTP FAIL -', (e.message || '').split('\n')[0]));

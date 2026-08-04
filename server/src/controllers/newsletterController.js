@@ -22,7 +22,17 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, message: 'No active subscribers found' });
   }
 
-  const smtpReady = Boolean(process.env.SMTP_USER && process.env.SMTP_PASS);
+  const smtpReady = Boolean(
+    (process.env.SMTP_USER || '').trim() && (process.env.SMTP_PASS || '').trim()
+  );
+
+  if (!smtpReady) {
+    return res.status(503).json({
+      success: false,
+      message: 'Email is not configured on the server. Please contact the developer.',
+    });
+  }
+
   const paragraphs = escapeHtml(message)
     .split(/\n+/)
     .filter(Boolean)
@@ -41,21 +51,34 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
     </div>
   `;
 
-  const results = { sent: 0, failed: 0, preview: !smtpReady, errors: [] };
+  const results = { sent: 0, failed: 0, errors: [] };
 
   for (const sub of subscribers) {
     try {
-      await sendEmail({
+      const result = await sendEmail({
         to: sub.email,
         subject,
         html,
         text: message,
       });
-      results.sent += 1;
+      if (result?.preview) {
+        results.failed += 1;
+        results.errors.push({ email: sub.email, error: 'Email preview only' });
+      } else {
+        results.sent += 1;
+      }
     } catch (err) {
       results.failed += 1;
       results.errors.push({ email: sub.email, error: err.message });
     }
+  }
+
+  if (results.sent === 0) {
+    return res.status(502).json({
+      success: false,
+      data: { total: subscribers.length, ...results },
+      message: 'Could not send emails. Gmail login failed — use a Google App Password in server settings.',
+    });
   }
 
   res.json({
@@ -63,10 +86,10 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
     data: {
       total: subscribers.length,
       ...results,
-      smtpConfigured: smtpReady,
     },
-    message: smtpReady
-      ? `Newsletter sent to ${results.sent} subscriber(s)`
-      : `SMTP not configured — logged ${results.sent} email(s) to server console only. Set SMTP_USER and SMTP_PASS to send real emails.`,
+    message:
+      results.failed > 0
+        ? `Sent to ${results.sent} subscriber(s), ${results.failed} failed.`
+        : `Email sent successfully to ${results.sent} subscriber(s).`,
   });
 });
