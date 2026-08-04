@@ -68,43 +68,88 @@ export const toArray = (value) => {
 
 export const fromArray = (value) => (Array.isArray(value) ? value.join(', ') : value || '');
 
-/** Base URL where Express serves /uploads (API host — never the Vercel frontend). */
+const isBrowser = () => typeof window !== 'undefined';
+
+const isLoopbackHost = (host = '') =>
+  /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/i.test(String(host).trim());
+
+/** Rewrite localhost absolute upload URLs so phones / other PCs can load them. */
+const toRelativeUploadPath = (raw) => {
+  try {
+    const url = new URL(raw);
+    if (/\/uploads\//i.test(url.pathname) && isLoopbackHost(url.hostname)) {
+      return url.pathname + url.search;
+    }
+  } catch {
+    /* not a URL */
+  }
+  return raw;
+};
+
+/**
+ * Base URL where Express serves /uploads.
+ * In local/dev on LAN: use the same host as the page (Vite proxies /uploads).
+ * Never hardcode localhost — that breaks phones and other PCs.
+ */
 export const getAssetBaseUrl = () => {
   const assetOverride = (import.meta.env.VITE_ASSET_URL || '').trim();
-  if (assetOverride) return assetOverride.replace(/\/$/, '');
+  if (assetOverride) {
+    try {
+      const overrideUrl = new URL(assetOverride, isBrowser() ? window.location.origin : undefined);
+      if (isBrowser() && isLoopbackHost(overrideUrl.hostname) && !isLoopbackHost(window.location.hostname)) {
+        return window.location.origin;
+      }
+      return overrideUrl.origin;
+    } catch {
+      return assetOverride.replace(/\/$/, '');
+    }
+  }
 
   const api = (import.meta.env.VITE_API_URL || '').trim();
   if (api) {
     try {
-      const url = new URL(api, typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173');
-      // Strip trailing /api path → origin only (uploads live at host/uploads)
+      const pageOrigin = isBrowser() ? window.location.origin : 'http://localhost:5173';
+      const url = new URL(api, pageOrigin);
+
+      // /api relative → same origin (Vite/Vercel proxy) — works on phone + PC
+      if (api.startsWith('/')) return pageOrigin;
+
+      // VITE_API_URL pointed at localhost but user opened site via LAN IP / hostname
+      if (isBrowser() && isLoopbackHost(url.hostname) && !isLoopbackHost(window.location.hostname)) {
+        return window.location.origin;
+      }
+
       return url.origin;
     } catch {
       /* fall through */
     }
   }
 
-  if (import.meta.env.DEV) return 'http://localhost:5000';
+  // Dev: same origin → Vite proxies /uploads to the API (works on mobile LAN)
+  if (import.meta.env.DEV && isBrowser()) return window.location.origin;
 
-  // Production without VITE_API_URL cannot load /uploads from Vercel — return empty
-  // so relative paths stay relative (broken) rather than pointing at wrong host.
-  // Set VITE_API_URL=https://YOUR-API.onrender.com/api in Vercel env.
+  // Production without VITE_API_URL: relative /uploads (needs Vercel rewrite or Cloudinary)
   return '';
 };
 
 /**
  * Resolve product/gallery image paths for <img src>.
- * - Full http(s) / Cloudinary URLs → unchanged
- * - /uploads/... → prefixed with API origin (local or Render)
+ * - Full http(s) / Cloudinary URLs → unchanged (except localhost uploads → rewritten)
+ * - /uploads/... → prefixed with API / page origin so mobile & other PCs work
  */
 export const resolveAssetUrl = (path) => {
   if (!path) return '';
-  const raw = String(path).trim();
+  let raw = String(path).trim();
   if (!raw) return '';
 
-  if (/^(https?:|blob:|data:)/i.test(raw)) return raw;
+  if (/^(blob:|data:)/i.test(raw)) return raw;
 
-  // Already a Cloudinary-style path without protocol (rare)
+  // Stale DB values like http://localhost:5000/uploads/x.jpg break on phones
+  if (/^https?:\/\//i.test(raw)) {
+    raw = toRelativeUploadPath(raw);
+    if (/^https?:\/\//i.test(raw)) return raw;
+  }
+
   if (raw.includes('res.cloudinary.com')) {
     return raw.startsWith('//') ? `https:${raw}` : `https://${raw.replace(/^\/+/, '')}`;
   }
@@ -113,9 +158,6 @@ export const resolveAssetUrl = (path) => {
   const base = getAssetBaseUrl();
 
   if (base) return `${base.replace(/\/$/, '')}${normalized}`;
-
-  // Dev proxy fallback
-  if (import.meta.env.DEV) return `http://localhost:5000${normalized}`;
 
   return normalized;
 };

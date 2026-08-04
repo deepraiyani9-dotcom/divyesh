@@ -31,7 +31,7 @@ const Contact = () => {
   const infoItems = [
     { icon: <FaPhoneAlt />, label: 'Call Us', value: COMPANY.phoneDisplay, href: COMPANY.phoneHref },
     { icon: <FaEnvelope />, label: 'Email Us', value: COMPANY.email, href: `mailto:${COMPANY.email}` },
-    { icon: <FaMapMarkerAlt />, label: 'Visit Us', value: COMPANY.address },
+    { icon: <FaMapMarkerAlt />, label: 'Visit Us', value: COMPANY.address, href: COMPANY.mapLink },
     { icon: <FaClock />, label: 'Working Hours', value: COMPANY.hours },
     { icon: <FaInstagram />, label: 'Instagram', value: '@lotusagritech_dwarka', href: COMPANY.instagram },
   ];

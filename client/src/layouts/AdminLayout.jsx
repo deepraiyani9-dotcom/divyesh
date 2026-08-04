@@ -18,6 +18,7 @@ import {
   FaCertificate,
   FaExternalLinkAlt,
   FaGlobe,
+  FaPaperPlane,
 } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext.jsx';
 import { COMPANY } from '../utils/constants';
@@ -35,6 +36,7 @@ const NAV = [
   { to: '/admin/certificates', label: 'Certificates', icon: <FaCertificate /> },
   { to: '/admin/contacts', label: 'Contact Enquiries', icon: <FaEnvelopeOpenText /> },
   { to: '/admin/quotes', label: 'Quote Requests', icon: <FaFileInvoiceDollar /> },
+  { to: '/admin/subscribers', label: 'Newsletter', icon: <FaPaperPlane /> },
   { to: '/admin/settings', label: 'Settings', icon: <FaCogs /> },
 ];
 

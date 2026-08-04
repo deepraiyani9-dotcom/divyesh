@@ -41,6 +41,7 @@ const AdminTestimonials = lazy(() => import('./pages/admin/Testimonials.jsx'));
 const AdminCertificates = lazy(() => import('./pages/admin/Certificates.jsx'));
 const AdminContacts = lazy(() => import('./pages/admin/Contacts.jsx'));
 const AdminQuotes = lazy(() => import('./pages/admin/Quotes.jsx'));
+const AdminSubscribers = lazy(() => import('./pages/admin/Subscribers.jsx'));
 const AdminSettings = lazy(() => import('./pages/admin/Settings.jsx'));
 const AdminProfile = lazy(() => import('./pages/admin/Profile.jsx'));
 
@@ -98,6 +99,7 @@ function AppRoutes() {
           <Route path="certificates" element={<AdminCertificates />} />
           <Route path="contacts" element={<AdminContacts />} />
           <Route path="quotes" element={<AdminQuotes />} />
+          <Route path="subscribers" element={<AdminSubscribers />} />
           <Route path="settings" element={<AdminSettings />} />
           <Route path="profile" element={<AdminProfile />} />
         </Route>

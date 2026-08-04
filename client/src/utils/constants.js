@@ -12,9 +12,8 @@ export const COMPANY = {
     'Dwarka - Jamnagar Highway, Opposite Khodiyar Mandir, Juvanpur - Kalyanpur - Dwarka, India - 361315',
   addressShort: 'Dwarka - Jamnagar Highway, Juvanpur, Dwarka, Gujarat',
   hours: 'Open 24×7 — Full Time',
-  mapQuery:
-    'Khodiyar Mandir, Juvanpur, Kalyanpur, Dwarka, Gujarat 361315',
-  mapLink: 'https://maps.app.goo.gl/BWjWsbLDNhfEghhc8?g_st=aw',
+  mapQuery: 'Lotus Agritech, Limabde, Gujarat 361315',
+  mapLink: 'https://maps.app.goo.gl/Py4RAMkGX5LUikbW8?g_st=aw',
   developerCredit: "Developed by Deep's Technology",
   founded: '2010',
 };

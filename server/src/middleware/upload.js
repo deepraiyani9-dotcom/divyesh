@@ -59,12 +59,10 @@ const persistUpload = async (req, file) => {
     };
   }
 
+  // Always store a relative path — absolute localhost URLs break on phones / other PCs
   const filename = saveToDisk(file);
   const relative = `/uploads/${filename}`;
-  const host = req.get('host');
-  const proto = (req.headers['x-forwarded-proto'] || req.protocol || 'http').split(',')[0].trim();
-  const absolute = host ? `${proto}://${host}${relative}` : relative;
-  return { url: absolute, filename, storage: 'local' };
+  return { url: relative, filename, storage: 'local' };
 };
 
 const getFileUrl = (req, filename) => {

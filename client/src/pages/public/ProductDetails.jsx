@@ -1,12 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination as SwiperPagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import { motion } from 'framer-motion';
-import { FaCheckCircle, FaChevronLeft, FaFileInvoiceDollar, FaPhoneAlt, FaTag } from 'react-icons/fa';
+import { FaCheckCircle, FaChevronLeft, FaChevronRight, FaFileInvoiceDollar, FaPhoneAlt, FaTag } from 'react-icons/fa';
 import SEO from '../../components/common/SEO.jsx';
 import LoadingSpinner from '../../components/common/LoadingSpinner.jsx';
 import ProductCard from '../../components/common/ProductCard.jsx';
@@ -17,6 +12,95 @@ import { COMPANY } from '../../utils/constants';
 
 const FALLBACK_IMG =
   'data:image/svg+xml;charset=UTF-8,%3Csvg width="600" height="500" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="600" height="500" fill="%23e2e8f0"/%3E%3Ctext x="50%25" y="50%25" font-size="20" fill="%2394a3b8" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif"%3ELotus Agritech PVC Pipe%3C/text%3E%3C/svg%3E';
+
+const ProductGallery = ({ images, name }) => {
+  const [active, setActive] = useState(0);
+  const safeImages = images.length ? images : [FALLBACK_IMG];
+  const current = safeImages[Math.min(active, safeImages.length - 1)];
+
+  useEffect(() => {
+    setActive(0);
+  }, [images]);
+
+  const go = (dir) => {
+    setActive((prev) => {
+      const next = prev + dir;
+      if (next < 0) return safeImages.length - 1;
+      if (next >= safeImages.length) return 0;
+      return next;
+    });
+  };
+
+  return (
+    <div className="w-full">
+      <div className="relative rounded-2xl border border-slate-200 bg-white overflow-hidden">
+        <div className="relative w-full aspect-square max-h-[70vh] bg-[#f4f5f7]">
+          <img
+            key={current}
+            src={current}
+            alt={`${name} ${active + 1}`}
+            className="absolute inset-0 w-full h-full object-contain p-3"
+            decoding="async"
+            loading="eager"
+            onError={(e) => {
+              if (e.currentTarget.dataset.fallback === '1') return;
+              e.currentTarget.dataset.fallback = '1';
+              e.currentTarget.src = FALLBACK_IMG;
+            }}
+          />
+        </div>
+
+        {safeImages.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/95 border border-slate-200 shadow-md text-ink flex items-center justify-center"
+              aria-label="Previous image"
+            >
+              <FaChevronLeft size={14} />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/95 border border-slate-200 shadow-md text-ink flex items-center justify-center"
+              aria-label="Next image"
+            >
+              <FaChevronRight size={14} />
+            </button>
+          </>
+        )}
+      </div>
+
+      {safeImages.length > 1 && (
+        <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+          {safeImages.map((img, idx) => (
+            <button
+              key={`${img}-${idx}`}
+              type="button"
+              onClick={() => setActive(idx)}
+              className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 bg-white ${
+                idx === active ? 'border-primary' : 'border-slate-200'
+              }`}
+              aria-label={`Show image ${idx + 1}`}
+            >
+              <img
+                src={img}
+                alt=""
+                className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+                onError={(e) => {
+                  e.currentTarget.src = FALLBACK_IMG;
+                }}
+              />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -51,6 +135,15 @@ const ProductDetails = () => {
     };
   }, [slug]);
 
+  const galleryImages = useMemo(() => {
+    if (!product?.images?.length) return [];
+    return product.images
+      .map((img) => (typeof img === 'string' ? img : img?.url || ''))
+      .filter(Boolean)
+      .map((img) => resolveAssetUrl(img))
+      .filter(Boolean);
+  }, [product]);
+
   if (loading) return <LoadingSpinner fullScreen />;
 
   if (error || !product) {
@@ -63,7 +156,6 @@ const ProductDetails = () => {
     );
   }
 
-  const images = product.images?.length ? product.images : [];
   const specs = product.specifications || {};
 
   return (
@@ -72,43 +164,23 @@ const ProductDetails = () => {
 
       <div className="pt-28 md:pt-32 pb-6 bg-surface border-b border-slate-100">
         <div className="container-custom">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-sm font-medium text-muted hover:text-primary transition-colors">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-sm font-medium text-muted hover:text-primary transition-colors"
+          >
             <FaChevronLeft size={12} /> Back
           </button>
         </div>
       </div>
 
-      <section className="section-padding !pt-10">
-        <div className="container-custom grid lg:grid-cols-2 gap-12">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-            {images.length > 0 ? (
-              <Swiper
-                modules={[Navigation, SwiperPagination]}
-                navigation
-                pagination={{ clickable: true }}
-                className="rounded-2xl overflow-hidden bg-surface aspect-square"
-              >
-                {images.map((img, idx) => (
-                  <SwiperSlide key={idx}>
-                    <img
-                      src={resolveAssetUrl(img)}
-                      alt={`${product.name} ${idx + 1}`}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = FALLBACK_IMG;
-                      }}
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            ) : (
-              <div className="rounded-2xl overflow-hidden bg-surface aspect-square flex items-center justify-center">
-                <img src={FALLBACK_IMG} alt={product.name} className="w-full h-full object-cover" />
-              </div>
-            )}
+      <section className="section-padding !pt-10 bg-[#fafbfc]">
+        <div className="container-custom grid lg:grid-cols-2 gap-10 lg:gap-12">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+            <ProductGallery images={galleryImages} name={product.name} />
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.05 }}>
             {product.category?.name && (
               <span className="inline-flex items-center gap-1.5 text-primary bg-primary/10 text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full mb-4">
                 <FaTag size={10} /> {product.category.name}

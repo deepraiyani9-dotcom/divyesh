@@ -7,6 +7,7 @@ const analytics = require('../controllers/analyticsController');
 const settings = require('../controllers/settingsController');
 const search = require('../controllers/searchController');
 const quoteReply = require('../controllers/quoteReplyController');
+const newsletter = require('../controllers/newsletterController');
 const {
   productController,
   categoryController,
@@ -62,6 +63,7 @@ router.put('/applications/:id', protect, authorize('admin', 'editor'), jobApplic
 router.delete('/applications/:id', protect, authorize('admin'), jobApplicationController.remove);
 
 router.get('/subscribers', protect, authorize('admin', 'editor', 'viewer'), subscriberController.getAll);
+router.post('/subscribers/broadcast', protect, authorize('admin', 'editor'), newsletter.broadcastNewsletter);
 router.delete('/subscribers/:id', protect, authorize('admin'), subscriberController.remove);
 
 router.post('/contact', publicCtrl.contactValidators, validate, publicCtrl.submitContact);
