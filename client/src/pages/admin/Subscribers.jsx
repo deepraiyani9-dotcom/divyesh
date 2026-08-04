@@ -67,9 +67,12 @@ const Subscribers = () => {
         setMessage('');
       }
     } catch (err) {
+      const timedOut = err.code === 'ECONNABORTED' || /timeout/i.test(err.message || '');
       setStatus({
         type: 'error',
-        text: err.response?.data?.message || 'Failed to send newsletter',
+        text: timedOut
+          ? 'Request timed out. Please try again — emails may still arrive shortly.'
+          : err.response?.data?.message || 'Failed to send newsletter',
       });
     } finally {
       setSending(false);

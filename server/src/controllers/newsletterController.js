@@ -33,6 +33,25 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
     });
   }
 
+  // Fail fast if Gmail login is broken (instead of hanging forever)
+  try {
+    const transporter = sendEmail.getTransporter();
+    if (transporter) {
+      await Promise.race([
+        transporter.verify(),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('SMTP verify timed out')), 12000)
+        ),
+      ]);
+    }
+  } catch (err) {
+    console.error('[newsletter] SMTP verify failed:', err.message);
+    return res.status(502).json({
+      success: false,
+      message: 'Could not connect to Gmail. Check App Password and try again.',
+    });
+  }
+
   const paragraphs = escapeHtml(message)
     .split(/\n+/)
     .filter(Boolean)
@@ -53,6 +72,7 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
 
   const results = { sent: 0, failed: 0, errors: [] };
 
+  // Send one-by-one (Gmail-friendly) with per-mail timeout inside sendEmail
   for (const sub of subscribers) {
     try {
       const result = await sendEmail({
@@ -66,8 +86,10 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
         results.errors.push({ email: sub.email, error: 'Email preview only' });
       } else {
         results.sent += 1;
+        console.log(`[newsletter] sent → ${sub.email}`);
       }
     } catch (err) {
+      console.error(`[newsletter] fail → ${sub.email}:`, err.message);
       results.failed += 1;
       results.errors.push({ email: sub.email, error: err.message });
     }
@@ -77,7 +99,7 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
     return res.status(502).json({
       success: false,
       data: { total: subscribers.length, ...results },
-      message: 'Could not send emails. Gmail login failed — use a Google App Password in server settings.',
+      message: 'Could not send emails. Please try again in a minute.',
     });
   }
 

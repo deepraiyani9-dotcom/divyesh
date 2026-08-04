@@ -7,4 +7,4 @@ export const getSubscribers = (params = {}) => api.get('/subscribers', { params 
 export const deleteSubscriber = (id) => api.delete(`/subscribers/${id}`).then((res) => res.data);
 
 export const broadcastNewsletter = (payload) =>
-  api.post('/subscribers/broadcast', payload).then((res) => res.data);
+  api.post('/subscribers/broadcast', payload, { timeout: 90000 }).then((res) => res.data);
