@@ -9,6 +9,20 @@ const escapeHtml = (str = '') =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
+const friendlySmtpError = (err) => {
+  const msg = String(err?.message || err || '');
+  if (/missing/i.test(msg)) {
+    return 'Render Environment Variables માં SMTP_USER / SMTP_PASS સેટ નથી. Redeploy કરો.';
+  }
+  if (/Invalid login|BadCredentials|EAUTH|535/i.test(msg)) {
+    return 'Gmail App Password Render પર ખોટું છે. Spaces/quotes વગર 16-digit App Password મૂકો અને Redeploy કરો.';
+  }
+  if (/timeout|ETIMEDOUT|ECONNECTION|ENOTFOUND/i.test(msg)) {
+    return 'Render થી Gmail connect timeout થયું. થોડી વાર પછી ફરી try કરો, અથવા SMTP_PORT=465 અને SMTP_SECURE=true સેટ કરો.';
+  }
+  return 'Could not connect to Gmail from live server. Check Render SMTP settings and redeploy.';
+};
+
 exports.broadcastNewsletter = asyncHandler(async (req, res) => {
   const subject = String(req.body.subject || '').trim();
   const message = String(req.body.message || '').trim();
@@ -22,33 +36,14 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, message: 'No active subscribers found' });
   }
 
-  const smtpReady = Boolean(
-    (process.env.SMTP_USER || '').trim() && (process.env.SMTP_PASS || '').trim()
-  );
-
-  if (!smtpReady) {
-    return res.status(503).json({
-      success: false,
-      message: 'Email is not configured on the server. Please contact the developer.',
-    });
-  }
-
-  // Fail fast if Gmail login is broken (instead of hanging forever)
   try {
-    const transporter = sendEmail.getTransporter();
-    if (transporter) {
-      await Promise.race([
-        transporter.verify(),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('SMTP verify timed out')), 12000)
-        ),
-      ]);
-    }
+    await sendEmail.verifySmtp();
   } catch (err) {
     console.error('[newsletter] SMTP verify failed:', err.message);
     return res.status(502).json({
       success: false,
-      message: 'Could not connect to Gmail. Check App Password and try again.',
+      message: friendlySmtpError(err),
+      detail: process.env.NODE_ENV === 'production' ? undefined : err.message,
     });
   }
 
@@ -72,7 +67,6 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
 
   const results = { sent: 0, failed: 0, errors: [] };
 
-  // Send one-by-one (Gmail-friendly) with per-mail timeout inside sendEmail
   for (const sub of subscribers) {
     try {
       const result = await sendEmail({
@@ -96,10 +90,11 @@ exports.broadcastNewsletter = asyncHandler(async (req, res) => {
   }
 
   if (results.sent === 0) {
+    const firstError = results.errors[0]?.error || '';
     return res.status(502).json({
       success: false,
       data: { total: subscribers.length, ...results },
-      message: 'Could not send emails. Please try again in a minute.',
+      message: friendlySmtpError(firstError) || 'Could not send emails. Please try again.',
     });
   }
 

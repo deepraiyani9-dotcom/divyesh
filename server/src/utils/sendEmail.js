@@ -9,24 +9,34 @@ const cleanPass = (value = '') =>
 let cachedTransporter = null;
 let cachedKey = '';
 
-const getTransporter = () => {
+const getMailConfig = () => {
   const user = (process.env.SMTP_USER || '').trim();
   const pass = cleanPass(process.env.SMTP_PASS || '');
+  return { user, pass };
+};
+
+const getTransporter = () => {
+  const { user, pass } = getMailConfig();
   if (!user || !pass) return null;
 
-  const key = `${user}:${pass}`;
+  const host = (process.env.SMTP_HOST || 'smtp.gmail.com').trim();
+  const port = Number(process.env.SMTP_PORT || 587);
+  const secure = port === 465 || String(process.env.SMTP_SECURE || '').toLowerCase() === 'true';
+  const key = `${user}:${pass}:${host}:${port}:${secure}`;
+
   if (cachedTransporter && cachedKey === key) return cachedTransporter;
 
   cachedKey = key;
   cachedTransporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: false,
+    host,
+    port,
+    secure,
     auth: { user, pass },
-    connectionTimeout: 15000,
-    greetingTimeout: 15000,
-    socketTimeout: 20000,
-    tls: { rejectUnauthorized: true },
+    connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    socketTimeout: 45000,
+    requireTLS: !secure,
+    tls: { minVersion: 'TLSv1.2' },
   });
 
   return cachedTransporter;
@@ -40,9 +50,16 @@ const withTimeout = (promise, ms, label) =>
     }),
   ]);
 
+const resolveFrom = (user) => {
+  const configuredFrom = (process.env.MAIL_FROM || '').trim().replace(/^["']|["']$/g, '');
+  if (configuredFrom && configuredFrom.toLowerCase().includes(user.toLowerCase())) {
+    return configuredFrom;
+  }
+  return `"Lotus Agritech" <${user}>`;
+};
+
 const sendEmail = async ({ to, subject, html, text }) => {
-  const user = (process.env.SMTP_USER || '').trim();
-  const pass = cleanPass(process.env.SMTP_PASS || '');
+  const { user, pass } = getMailConfig();
 
   if (!user || !pass) {
     console.log(`[email:dev] To: ${to} | ${subject}`);
@@ -50,24 +67,34 @@ const sendEmail = async ({ to, subject, html, text }) => {
   }
 
   const transporter = getTransporter();
-  const configuredFrom = (process.env.MAIL_FROM || '').trim();
-  const from =
-    configuredFrom && configuredFrom.toLowerCase().includes(user.toLowerCase())
-      ? configuredFrom
-      : `"Lotus Agritech" <${user}>`;
 
   return withTimeout(
     transporter.sendMail({
-      from,
+      from: resolveFrom(user),
       to,
       subject,
       html,
       text,
     }),
-    25000,
+    40000,
     `Email to ${to}`
   );
 };
 
+const verifySmtp = async () => {
+  const { user, pass } = getMailConfig();
+  if (!user || !pass) {
+    const err = new Error('SMTP_USER or SMTP_PASS missing on server');
+    err.code = 'SMTP_MISSING';
+    throw err;
+  }
+
+  const transporter = getTransporter();
+  await withTimeout(transporter.verify(), 35000, 'SMTP verify');
+  return { ok: true, user };
+};
+
 module.exports = sendEmail;
 module.exports.getTransporter = getTransporter;
+module.exports.verifySmtp = verifySmtp;
+module.exports.getMailConfig = getMailConfig;
